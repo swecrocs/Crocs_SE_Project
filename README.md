@@ -17,8 +17,8 @@ Ensure you have the following installed:
 
 #### 2. Clone the repository
 ```bash
-git clone https://github.com/yourusername/the-grid.git
-cd the-grid
+git clone https://github.com/swecrocs/Crocs_SE_Project.git
+cd Crocs_SE_Project
 ```
 
 #### 3. Frontend Setup
@@ -35,8 +35,11 @@ cd the-grid
 - Run the backend server
    ```bash
    go run main.go
-   ```   
-
+   ```
+- Need access to the backend API docs? Visit
+   ```
+   http://localhost:8080/swagger/index.html#/
+   ```
 
 ## Team Members and Roles
 
