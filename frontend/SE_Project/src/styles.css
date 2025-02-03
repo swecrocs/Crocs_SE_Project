@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Inter:wght@400;600;700&family=Lora:wght@400;600&family=Montserrat:wght@400;600&display=swap');
+
+/* Global Font (Default to Roboto) */
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Headings (More Modern & Bold) */
+h1, h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+/* Subheadings (Softer & Elegant) */
+h3, h4 {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+}
+
+/* Buttons & CTA (Sleek & Futuristic) */
+button, .cta-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
