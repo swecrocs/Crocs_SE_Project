@@ -1,33 +1,42 @@
-# Team Crocs
+# 🎓 The Grid: A Research Collaboration Platform
 
-## Project Description
+## 🚀 Project Overview
+This project is a research collaboration platform designed to help **graduate students, postdocs, and faculty** connect across universities.
 
-To create a diabetes management app that stands apart by offering personalized recommendations tailored to individual lifestyles, cultural backgrounds, and dietary preferences. Unlike existing apps, this solution prioritizes cultural inclusivity and personalization to make diabetes care both practical and effective.
+## 📌 Key Features
+- **Project Collaboration**: Users can create, join, and manage collaborative research projects.
+- **Search & Discovery**: Find collaborators and projects based on expertise and research interests.
+- and more...
 
-## Key Features:
+## Development Setup
+#### 1. Prerequisites
+Ensure you have the following installed:
+- **Git**
+- **Node.js & npm/yarn** (for frontend)
+- **Go** (for backend)
 
-1. **Culturally Adapted Diet Plans**:
+#### 2. Clone the repository
+```bash
+git clone https://github.com/yourusername/the-grid.git
+cd the-grid
+```
 
-   - Tailored meal plans that respect cultural diets and restrictions (e.g., vegetarian options for Hindu users, Halal food for Muslims, Pescetarian diets, etc.).
-   - Includes ingredient substitutions to maintain blood sugar levels without compromising cultural identity.
+#### 3. Frontend Setup
 
-2. **Lifestyle-Centric Recommendations**:
+#### 4. Backend Setup
+- Navigate to the `backend` directory
+   ```bash
+   cd backend
+   ```
+- Install dependencies
+   ```bash
+   go mod tidy
+   ```
+- Run the backend server
+   ```bash
+   go run main.go
+   ```   
 
-   - Personalized tips for managing blood sugar levels based on individual habits and preferences (e.g., timing meals around traditional practices or festivals).
-   - Exercise and activity suggestions aligned with cultural norms and accessibility.
-
-3. **Comprehensive Tracking**:
-
-   - Tools for tracking blood sugar, medication, meals, and physical activity.
-   - Insights and reminders that align with the user’s unique lifestyle.
-
-4. **Educational Resources**:
-   - Diabetes management tips and recipes designed for specific cultural groups.
-   - Information on local foods, portion control, and accessible substitutions.
-
-## Why This App?
-
-Diabetes is a global condition that requires personalized care, yet most apps take a one-size-fits-all approach. By addressing cultural and dietary nuances, our app fills this critical gap, empowering users to manage their diabetes in a way that feels authentic to their lives
 
 ## Team Members and Roles
 
