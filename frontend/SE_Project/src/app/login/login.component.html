@@ -1,0 +1,24 @@
+<div>
+    <body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="assets/images/collab_icon.png" alt="CollabResearch Logo" class="logo-icon">
+            <h2>CollabResearch</h2>
+          </div>
+        <form [formGroup]="form" (submit)="getFormValue()" class="form-container">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" formControlName="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password" class="form-control">
+            </div>
+            <div class="login-button-group">
+                <button type="submit" class="login-button">Sign In</button>
+                <h5 onclick="onRegister()" class="signup-text">Sign up</h5>
+            </div>
+        </form>
+    </div>
+    </body>
+</div>
