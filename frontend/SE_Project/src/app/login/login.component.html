@@ -7,8 +7,8 @@
           </div>
         <form [formGroup]="form" (submit)="getFormValue()" class="form-container">
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" formControlName="username" class="form-control">
+                <label>Email</label>
+                <input type="text" formControlName="email" class="form-control">
             </div>
             <div class="form-group">
                 <label>Password</label>
@@ -16,7 +16,7 @@
             </div>
             <div class="login-button-group">
                 <button type="submit" class="login-button">Sign In</button>
-                <h5 onclick="onRegister()" class="signup-text">Sign up</h5>
+                <h5 (click)="onRegister()" class="signup-text">Sign up</h5>
             </div>
         </form>
     </div>

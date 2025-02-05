@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 export class LoginComponent {
     
+    constructor(private router: Router){}
+
     form = new FormGroup({
-        username: new FormControl(),
+        email: new FormControl(),
         password: new FormControl()
     })
 
@@ -23,6 +26,6 @@ export class LoginComponent {
     }
 
     onRegister() {
-
+        this.router.navigate(['/registration']);
     }
 }
