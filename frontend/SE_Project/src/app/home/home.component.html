@@ -1,0 +1,75 @@
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <img src="assets/images/collab_icon.png" alt="CollabResearch Logo" class="logo-icon">
+    <h2>CollabResearch</h2>
+  </div>
+  <nav>
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/projects">Projects</a></li>
+      <li><a routerLink="/researchers">Researchers</a></li>
+    </ul>
+  </nav>
+  <div class="auth-buttons">
+    <button class="login-btn" (click)="openLoginModal()">Log in</button>
+    <button class="signup-btn" (click)="openSignupModal()">Sign up</button>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-container">
+  <div class="hero-content">
+    <h1>Every <span class="highlight">researcher</span> has a place on <strong>CollabResearch</strong>.</h1>
+    <p>Find projects, collaborate, and innovate with leading experts.</p>
+    <div class="hero-buttons">
+      <a routerLink="/register" class="primary-btn">Get Started</a>
+      <a routerLink="/community" class="secondary-link">Visit the community →</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img ngSrc="assets/images/collaboration.jpg" alt="Collaboration" width="600" height="350" priority >
+  </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="services">
+  <h2>Discover Opportunities</h2>
+  <div class="service-container">
+    <div class="service-card">
+      <h3>Find Research Projects</h3>
+      <p>Search for research projects based on your expertise.</p>
+    </div>
+    <div class="service-card">
+      <h3>Collaborate with Experts</h3>
+      <p>Work with top researchers worldwide.</p>
+    </div>
+    <div class="service-card">
+      <h3>Manage Your Team</h3>
+      <p>Assign roles and track project progress efficiently.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built with ❤️ by passionate researchers.</p>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal" *ngIf="showLoginModal">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <button class="close" (click)="closeLoginModal()">X</button>
+    <p>Your teammate will work on this section.</p>
+  </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div class="modal" *ngIf="showSignupModal">
+  <div class="modal-content">
+    <h2>Sign Up</h2>
+    <button class="close" (click)="closeSignupModal()">X</button>
+    <p>Your teammate will work on this section.</p>
+  </div>
+</div>

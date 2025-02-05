@@ -1,0 +1,59 @@
+basePath: /
+definitions:
+  controllers.ErrorResponse:
+    properties:
+      error:
+        example: Invalid request
+        type: string
+    type: object
+  controllers.UserRegistrationRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.UserRegistrationResponse:
+    properties:
+      message:
+        example: Registration successful
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  title: The Grid Backend API
+  version: "0.0"
+paths:
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account using user credentials. The provided
+        password is hashed before storing to database.
+      parameters:
+      - description: User credentials
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserRegistrationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.UserRegistrationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Authentication
+swagger: "2.0"
