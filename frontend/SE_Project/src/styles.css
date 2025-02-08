@@ -1,26 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Inter:wght@400;600;700&family=Lora:wght@400;600&family=Montserrat:wght@400;600&display=swap');
-
-/* Global Font (Default to Roboto) */
-* {
-  font-family: 'Roboto', sans-serif;
+@font-face {
+  font-family: 'Funnel Sans';
+  src: url('assets/fonts/Funnel_Sans/FunnelSans-Regular.ttf') format('truetype'),
+       url('assets/fonts/Funnel_Sans/FunnelSans-Light.ttf') format('truetype'),
+       url('assets/fonts/Funnel_Sans/FunnelSans-Bold.ttf') format('truetype'),
+       url('assets/fonts/Funnel_Sans/FunnelSans-Italic.ttf') format('truetype'),
+       url('assets/fonts/Funnel_Sans/FunnelSans-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Headings (More Modern & Bold) */
-h1, h2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
+/* Bold */
+@font-face {
+  font-family: 'Funnel Sans';
+  src: url('assets/fonts/Funnel_Sans/FunnelSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
 }
 
-/* Subheadings (Softer & Elegant) */
-h3, h4 {
-  font-family: 'Lora', serif;
-  font-weight: 600;
+/* Italic */
+@font-face {
+  font-family: 'Funnel Sans';
+  src: url('assets/fonts/Funnel_Sans/FunnelSans-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
 }
-
-/* Buttons & CTA (Sleek & Futuristic) */
-button, .cta-button {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
+body{
+  margin:0;
+  padding:0;
+  }

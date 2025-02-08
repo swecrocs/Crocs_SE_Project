@@ -1,75 +1,106 @@
 <!-- HEADER -->
 <header>
   <div class="logo">
-    <img src="assets/images/collab_icon.png" alt="CollabResearch Logo" class="logo-icon">
-    <h2>CollabResearch</h2>
+    <img src="assets/icons/The Grid Icon.svg" alt="The Grid Logo">
+    <h2>The Grid</h2>
   </div>
   <nav>
     <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/projects">Projects</a></li>
+      <li><a routerLink="/about">About</a></li>
+      <li><a routerLink="/explore">Explore</a></li>
       <li><a routerLink="/researchers">Researchers</a></li>
     </ul>
   </nav>
   <div class="auth-buttons">
-    <button class="login-btn" (click)="openLoginModal()">Log in</button>
-    <button class="signup-btn" (click)="openSignupModal()">Sign up</button>
+    <button class="login-btn">LOG IN</button>
+    <button class="signup-btn">SIGN UP</button>
   </div>
 </header>
 
 <!-- HERO SECTION -->
 <section class="hero-container">
   <div class="hero-content">
-    <h1>Every <span class="highlight">researcher</span> has a place on <strong>CollabResearch</strong>.</h1>
-    <p>Find projects, collaborate, and innovate with leading experts.</p>
-    <div class="hero-buttons">
-      <a routerLink="/register" class="primary-btn">Get Started</a>
-      <a routerLink="/community" class="secondary-link">Visit the community →</a>
-    </div>
+    <h1>Where Brilliant <br> Minds Connect.</h1>
+    <p>Join a global network of top researchers, collaborate on projects, and fast-track discoveries— <em>together.</em></p>
+    <button class="cta-button">Get Started</button>
   </div>
-  <div class="hero-image">
-    <img ngSrc="assets/images/collaboration.jpg" alt="Collaboration" width="600" height="350" priority >
+
+  <!-- HERO BACKGROUND ICONS -->
+  <div class="hero-background">
+    <img src="assets/icons/The Grid Icon Outlined.svg" class="icon-small" alt="Decorative Icon">
+    <img src="assets/icons/The Grid Icon Outlined.svg" class="icon-medium" alt="Decorative Icon">
+    <img src="assets/icons/The Grid Icon Outlined.svg" class="icon-large" alt="Decorative Icon">
   </div>
 </section>
 
-<!-- SERVICES SECTION -->
-<section class="services">
-  <h2>Discover Opportunities</h2>
-  <div class="service-container">
-    <div class="service-card">
-      <h3>Find Research Projects</h3>
-      <p>Search for research projects based on your expertise.</p>
+<!-- HOW IT WORKS SECTION -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <div class="how-it-works-container">
+    <div class="work-card">
+      <img src="assets/icons/Abstract Icon 1.svg" alt="Step 1">
+      <h3>Title</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
     </div>
-    <div class="service-card">
-      <h3>Collaborate with Experts</h3>
-      <p>Work with top researchers worldwide.</p>
+    <div class="work-card">
+      <img src="assets/icons/Abstract Icon 2.svg" alt="Step 2">
+      <h3>Title</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
     </div>
-    <div class="service-card">
-      <h3>Manage Your Team</h3>
-      <p>Assign roles and track project progress efficiently.</p>
+    <div class="work-card">
+      <img src="assets/icons/Abstract Icon 3.svg" alt="Step 3">
+      <h3>Title</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <p>Built with ❤️ by passionate researchers.</p>
-</footer>
-
-<!-- LOGIN MODAL -->
-<div class="modal" *ngIf="showLoginModal">
-  <div class="modal-content">
-    <h2>Login</h2>
-    <button class="close" (click)="closeLoginModal()">X</button>
-    <p>Your teammate will work on this section.</p>
+<!-- FIND PROJECTS BY SUBFIELD SECTION -->
+<section class="projects-section">
+  <div class="projects-content">
+    <h2>Find Projects <br> by Subfield</h2>
+    <p class="subheading"> <strong>Lorem ipsum dolor sit amet</strong></p>
+    <p class="description">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </p>
   </div>
-</div>
 
-<!-- SIGNUP MODAL -->
-<div class="modal" *ngIf="showSignupModal">
-  <div class="modal-content">
-    <h2>Sign Up</h2>
-    <button class="close" (click)="closeSignupModal()">X</button>
-    <p>Your teammate will work on this section.</p>
+  <!-- Placeholder for Project Cards -->
+  <div class="project-images">
+    <!-- Placeholder - Add images later -->
   </div>
-</div>
+</section>
+
+<!-- COLLABORATE WITH EXPERTS SECTION -->
+<section class="collaborate-experts">
+  <div class="collaborate-content">
+    <h2>Collaborate <br> with Experts</h2>
+    <p><strong>Lorem ipsum dolor sit amet</strong></p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+    </p>
+  </div>
+
+  <!-- EXPERTS FLASHCARDS -->
+  <div class="experts-container">
+    <div class="expert-card expert-one">
+      <img src="assets/images/expert1.jpg" alt="Expert 1">
+      <div class="expert-info">
+        <strong>Alin Dobra</strong>
+        <p>Databases & Cybersecurity | 75+ Publications</p>
+        <p>University of Florida</p>
+      </div>
+    </div>
+
+    <div class="expert-card expert-two">
+      <img src="assets/images/expert2.jpg" alt="Expert 2">
+      <div class="expert-info">
+        <strong>Petar Veličković</strong>
+        <p>Deep Learning | 100+ Publications</p>
+        <p>University of Cambridge</p>
+      </div>
+    </div>
+  </div>
+</section>
