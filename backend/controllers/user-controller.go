@@ -1,15 +1,16 @@
 package controllers
 
 import (
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"backend/database"
 	"backend/models"
 	"backend/utils"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type UserRegistrationRequest struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 

@@ -1,12 +1,13 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "backend/database"
-    "backend/routes"
-    swaggerFiles "github.com/swaggo/files"
-    ginSwagger "github.com/swaggo/gin-swagger"
-    _ "backend/docs"
+	"backend/database"
+	_ "backend/docs"
+	"backend/routes"
+
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title    The Grid Backend API
@@ -14,13 +15,13 @@ import (
 // @host     localhost:8080
 // @BasePath /
 func main() {
-    // initialize database
+	// initialize database
 	database.InitDatabase()
-    // initialize router
-    router := gin.Default()
-    routes.UserRoutes(router)
-    // swagger endpoint
-    router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-    // start server
-    router.Run(":8080")
+	// initialize router
+	router := gin.Default()
+	routes.UserRoutes(router)
+	// swagger endpoint
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// start server
+	router.Run(":8080")
 }

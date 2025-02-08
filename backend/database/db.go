@@ -1,10 +1,11 @@
 package database
 
 import (
+	"backend/models"
 	"log"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"backend/models"
 )
 
 // global database instance
@@ -20,4 +21,3 @@ func InitDatabase() {
 
 	DB.AutoMigrate(&models.User{})
 }
-
