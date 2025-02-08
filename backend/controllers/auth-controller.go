@@ -1,20 +1,22 @@
 package controllers
 
 import (
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"backend/database"
 	"backend/models"
 	"backend/utils"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type UserRegistrationRequest struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 type UserRegistrationResponse struct {
 	Message string `json:"message" example:"Registration successful"`
+	UserID  uint   `json:"user_id"`
 }
 
 type ErrorResponse struct {
@@ -23,7 +25,7 @@ type ErrorResponse struct {
 
 // RegisterUser godoc
 // @Summary      Register a new user
-// @Description  Create a new user account using user credentials. The provided password is hashed before storing to database.
+// @Description  Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.
 // @Tags         Authentication
 // @Accept       json
 // @Produce      json
@@ -56,6 +58,16 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
+	// create blank user profile
+	userProfile := models.UserProfile{UserID: user.ID}
+	if err := database.DB.Create(&userProfile).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to create user profile"})
+		return
+	}
+
 	// respond upon successful registration
-	c.JSON(http.StatusCreated, UserRegistrationResponse{Message: "Registration successful"})
+	c.JSON(
+		http.StatusCreated,
+		UserRegistrationResponse{Message: "Registration successful", UserID: user.ID},
+	)
 }

@@ -1,10 +1,11 @@
 package database
 
 import (
+	"backend/models"
 	"log"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"backend/models"
 )
 
 // global database instance
@@ -18,6 +19,5 @@ func InitDatabase() {
 		log.Fatal("Failed to connect to users database: ", err)
 	}
 
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.User{}, &models.UserProfile{})
 }
-
