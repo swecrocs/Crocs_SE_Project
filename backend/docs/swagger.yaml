@@ -6,6 +6,20 @@ definitions:
         example: Invalid request
         type: string
     type: object
+  controllers.ProfileEditRequest:
+    properties:
+      affiliation:
+        type: string
+      bio:
+        type: string
+      full_name:
+        type: string
+    type: object
+  controllers.ProfileEditResponse:
+    properties:
+      message:
+        type: string
+    type: object
   controllers.UserRegistrationRequest:
     properties:
       email:
@@ -18,6 +32,8 @@ definitions:
       message:
         example: Registration successful
         type: string
+      user_id:
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -30,7 +46,7 @@ paths:
       consumes:
       - application/json
       description: Create a new user account using user credentials. The provided
-        password is hashed before storing to database.
+        password is hashed before storing to database. A blank user profile is created.
       parameters:
       - description: User credentials
         in: body
@@ -56,4 +72,43 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
+  /users/{id}/profile:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user profile with new information.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Profile information
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ProfileEditRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProfileEditResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Edit user profile
+      tags:
+      - Users
 swagger: "2.0"

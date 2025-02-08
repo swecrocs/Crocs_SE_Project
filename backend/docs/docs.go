@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/auth/register": {
             "post": {
-                "description": "Create a new user account using user credentials. The provided password is hashed before storing to database.",
+                "description": "Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.",
                 "consumes": [
                     "application/json"
                 ],
@@ -60,6 +60,65 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/{id}/profile": {
+            "put": {
+                "description": "Update an existing user profile with new information.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Edit user profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Profile information",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ProfileEditRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ProfileEditResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -69,6 +128,28 @@ const docTemplate = `{
                 "error": {
                     "type": "string",
                     "example": "Invalid request"
+                }
+            }
+        },
+        "controllers.ProfileEditRequest": {
+            "type": "object",
+            "properties": {
+                "affiliation": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.ProfileEditResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         },
@@ -89,6 +170,9 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Registration successful"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         }

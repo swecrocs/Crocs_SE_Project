@@ -20,6 +20,7 @@ func main() {
 	// initialize router
 	router := gin.Default()
 	routes.AuthRoutes(router)
+	routes.UsersRoutes(router)
 	// swagger endpoint
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// start server
