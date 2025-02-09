@@ -34,31 +34,31 @@ type ProfileEditResponse struct {
 func EditUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
-	// find the profile linked to this user
+	// Find the profile linked to this user
 	var profile models.UserProfile
 	if err := database.DB.Where("user_id = ?", userID).First(&profile).Error; err != nil {
 		c.JSON(http.StatusNotFound, ErrorResponse{Error: "Profile not found"})
 		return
 	}
 
-	// bind request JSON to ProfileEditRequest struct
+	// Bind request JSON to ProfileEditRequest struct
 	var request ProfileEditRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
 		return
 	}
 
-	// update profile fields
+	// Update profile fields
 	profile.FullName = request.FullName
 	profile.Bio = request.Bio
 	profile.Affiliation = request.Affiliation
 
-	// save changes to database
+	// Save changes to the database
 	if err := database.DB.Save(&profile).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to update profile"})
 		return
 	}
 
-	// send success response
+	// Send success response
 	c.JSON(http.StatusOK, ProfileEditResponse{Message: "Profile updated successfully"})
 }

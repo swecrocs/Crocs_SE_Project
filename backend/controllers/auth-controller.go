@@ -3,71 +3,74 @@ package controllers
 import (
 	"backend/database"
 	"backend/models"
-	"backend/utils"
 	"net/http"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
-type UserRegistrationRequest struct {
+var jwtSecret = []byte("your-secret-key") // Change this key in production
+
+// LoginRequest model for login data
+type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type UserRegistrationResponse struct {
-	Message string `json:"message" example:"Registration successful"`
-	UserID  uint   `json:"user_id"`
+// LoginResponse model to return JWT token
+type LoginResponse struct {
+	Token string `json:"token"`
 }
 
-type ErrorResponse struct {
-	Error string `json:"error" example:"Invalid request"`
-}
-
-// RegisterUser godoc
-// @Summary      Register a new user
-// @Description  Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.
-// @Tags         Authentication
+// Login godoc
+// @Summary      User login
+// @Description  Login with email and password to get a JWT token.
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
-// @Param        requestBody body UserRegistrationRequest true "User credentials"
-// @Success      201 {object} UserRegistrationResponse
+// @Param        login body LoginRequest true "User login credentials"
+// @Success      200 {object} LoginResponse
 // @Failure      400 {object} ErrorResponse
-// @Failure      500 {object} ErrorResponse
-// @Router       /auth/register [post]
-func RegisterUser(c *gin.Context) {
-	var requestBody UserRegistrationRequest
-
-	// validate input request against expected schema
-	if err := c.ShouldBindJSON(&requestBody); err != nil {
+// @Failure      404 {object} ErrorResponse
+// @Router       /auth/login [post]
+func Login(c *gin.Context) {
+	var loginRequest LoginRequest
+	if err := c.ShouldBindJSON(&loginRequest); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
 		return
 	}
 
-	// hash password
-	hashedPassword, err := utils.HashPassword(requestBody.Password)
+	var user models.User
+	if err := database.DB.Where("email = ?", loginRequest.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
+		return
+	}
+
+	// Compare the password hash
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, ErrorResponse{Error: "Invalid credentials"})
+		return
+	}
+
+	// Generate JWT token
+	token, err := generateJWT(user.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to hash password"})
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to generate token"})
 		return
 	}
 
-	// create new user
-	user := models.User{Email: requestBody.Email, Password: hashedPassword}
-	// ensure email does not already exist in user database
-	if err := database.DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Email already registered"})
-		return
+	c.JSON(http.StatusOK, LoginResponse{Token: token})
+}
+
+// Helper function to generate JWT token
+func generateJWT(userID uint) (string, error) {
+	claims := jwt.MapClaims{
+		"user_id": userID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 
-	// create blank user profile
-	userProfile := models.UserProfile{UserID: user.ID}
-	if err := database.DB.Create(&userProfile).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to create user profile"})
-		return
-	}
-
-	// respond upon successful registration
-	c.JSON(
-		http.StatusCreated,
-		UserRegistrationResponse{Message: "Registration successful", UserID: user.ID},
-	)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
 }
