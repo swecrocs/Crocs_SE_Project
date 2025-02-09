@@ -1,61 +1,64 @@
 package controllers
 
 import (
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"backend/database"
 	"backend/models"
-	"backend/utils"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-type UserRegistrationRequest struct {
-	Email string `json:"email"`
-	Password string `json:"password"`
+type ProfileEditRequest struct {
+	FullName    string `json:"full_name"`
+	Bio         string `json:"bio"`
+	Affiliation string `json:"affiliation"`
 }
 
-type UserRegistrationResponse struct {
-	Message string `json:"message" example:"Registration successful"`
+type ProfileEditResponse struct {
+	Message string `json:"message"`
 }
 
-type ErrorResponse struct {
-	Error string `json:"error" example:"Invalid request"`
-}
-
-// RegisterUser godoc
-// @Summary      Register a new user
-// @Description  Create a new user account using user credentials. The provided password is hashed before storing to database.
-// @Tags         Authentication
+// EditUserProfile godoc
+// @Summary      Edit user profile
+// @Description  Update an existing user profile with new information.
+// @Tags         Users
 // @Accept       json
 // @Produce      json
-// @Param        requestBody body UserRegistrationRequest true "User credentials"
-// @Success      201 {object} UserRegistrationResponse
+// @Param        id path string true "User ID"
+// @Param        request body ProfileEditRequest true "Profile information"
+// @Success      200 {object} ProfileEditResponse
 // @Failure      400 {object} ErrorResponse
+// @Failure      404 {object} ErrorResponse
 // @Failure      500 {object} ErrorResponse
-// @Router       /auth/register [post]
-func RegisterUser(c *gin.Context) {
-	var requestBody UserRegistrationRequest
+// @Router       /users/{id}/profile [put]
+func EditUserProfile(c *gin.Context) {
+	userID := c.Param("id")
 
-	// validate input request against expected schema
-	if err := c.ShouldBindJSON(&requestBody); err != nil {
+	// find the profile linked to this user
+	var profile models.UserProfile
+	if err := database.DB.Where("user_id = ?", userID).First(&profile).Error; err != nil {
+		c.JSON(http.StatusNotFound, ErrorResponse{Error: "Profile not found"})
+		return
+	}
+
+	// bind request JSON to ProfileEditRequest struct
+	var request ProfileEditRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
 		return
 	}
 
-	// hash password
-	hashedPassword, err := utils.HashPassword(requestBody.Password)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to hash password"})
+	// update profile fields
+	profile.FullName = request.FullName
+	profile.Bio = request.Bio
+	profile.Affiliation = request.Affiliation
+
+	// save changes to database
+	if err := database.DB.Save(&profile).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to update profile"})
 		return
 	}
 
-	// create new user
-	user := models.User{Email: requestBody.Email, Password: hashedPassword}
-	// ensure email does not already exist in user database
-	if err := database.DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Email already registered"})
-		return
-	}
-
-	// respond upon successful registration
-	c.JSON(http.StatusCreated, UserRegistrationResponse{Message: "Registration successful"})
+	// send success response
+	c.JSON(http.StatusOK, ProfileEditResponse{Message: "Profile updated successfully"})
 }
