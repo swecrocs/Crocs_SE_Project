@@ -1,12 +1,11 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type UserProfile struct {
 	gorm.Model
-	UserID uint   `gorm:"uniqueIndex"`
-	Name   string `gorm:"size:255"`
-	Age    int
+	UserID      uint   `json:"user_id"`
+	FullName    string `json:"full_name"`
+	Bio         string `json:"bio"`
+	Affiliation string `json:"affiliation"`
 }
