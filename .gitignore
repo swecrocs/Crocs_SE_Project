@@ -2,4 +2,5 @@
 *.db
 
 # ignore OS-specific files
-.DS_Store
+.DS_Storebackend/backend.exe 
+backend/git 
