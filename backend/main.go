@@ -6,6 +6,8 @@ import (
 	"backend/routes"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
+	"time"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -19,6 +21,16 @@ func main() {
 	database.InitDatabase()
 	// initialize router
 	router := gin.Default()
+	// enable CORS
+    router.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:4200"}, // frontend hosting port
+        AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+        MaxAge:           12 * time.Hour,
+    }))
+	// register routes
 	routes.AuthRoutes(router)
 	routes.UsersRoutes(router)
 	// swagger endpoint
