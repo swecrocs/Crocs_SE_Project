@@ -1,14 +1,15 @@
 package controllers
 
 import (
+	"backend/database"
 	"backend/models"
-	"backend/utils"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var jwtKey = []byte(os.Getenv("JWT_SECRET"))
@@ -18,55 +19,71 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-// LoginUser godoc
-// @Summary      Authenticate user
-// @Description  Authenticate user credentials and return a JWT token.
-// @Tags         Authentication
+// LoginRequest model for login data
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// LoginResponse model to return JWT token
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
+// Login godoc
+// @Summary      User login
+// @Description  Login with email and password to get a JWT token.
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
-// @Param        request body models.User true "User login details"
-// @Success      200 {object} map[string]string
-// @Failure      400 {object} utils.ErrorResponse
-// @Failure      401 {object} utils.ErrorResponse
+// @Param        login body LoginRequest true "User login credentials"
+// @Success      200 {object} LoginResponse
+// @Failure      400 {object} ErrorResponse
+// @Failure      404 {object} ErrorResponse
 // @Router       /auth/login [post]
-func LoginUser(c *gin.Context) {
-	var loginRequest models.User
-
-	// Bind JSON request
+func Login(c *gin.Context) {
+	var loginRequest LoginRequest
 	if err := c.ShouldBindJSON(&loginRequest); err != nil {
-		c.JSON(http.StatusBadRequest, utils.ErrorResponse{Error: "Invalid request"})
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
 		return
 	}
 
-	// Fetch user from database
-	user, err := models.GetUserByEmail(loginRequest.Email)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, utils.ErrorResponse{Error: "Invalid email or password"})
+	var user models.User
+	if err := database.DB.Where("email = ?", loginRequest.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	// Verify password
-	if !utils.CheckPasswordHash(loginRequest.Password, user.Password) {
-		c.JSON(http.StatusUnauthorized, utils.ErrorResponse{Error: "Invalid email or password"})
+	// Compare the password hash
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, ErrorResponse{Error: "Invalid credentials"})
 		return
 	}
 
 	// Generate JWT token
-	expirationTime := time.Now().Add(24 * time.Hour)
-	claims := &Claims{
-		UserID: user.ID,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	token, err := generateJWT(user.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, utils.ErrorResponse{Error: "Failed to generate token"})
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to generate token"})
 		return
 	}
 
-	// Return token
-	c.JSON(http.StatusOK, gin.H{"token": tokenString})
+	c.JSON(http.StatusOK, LoginResponse{Token: token})
+}
+
+// Helper function to generate JWT token
+func generateJWT(userID uint) (string, error) {
+	claims := jwt.MapClaims{
+		"user_id": userID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtKey)
+}
+
+func EditUserProfile(c *gin.Context) {
+	// Your logic to edit the user's profile here
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Profile updated successfully",
+	})
 }

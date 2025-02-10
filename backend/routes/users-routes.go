@@ -8,5 +8,6 @@ import (
 
 func RegisterUserRoutes(router *gin.Engine) {
 	// Only login route for now
-	router.POST("/auth/login", controllers.LoginUser)
+	// This handles user login
+	router.POST("/auth/login", controllers.Login)
 }
