@@ -1,75 +1,183 @@
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <img src="assets/images/collab_icon.png" alt="CollabResearch Logo" class="logo-icon">
-    <h2>CollabResearch</h2>
-  </div>
-  <nav>
-    <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/projects">Projects</a></li>
-      <li><a routerLink="/researchers">Researchers</a></li>
-    </ul>
-  </nav>
-  <div class="auth-buttons">
-    <button class="login-btn" (click)="openLoginModal()">Log in</button>
-    <button class="signup-btn" (click)="openSignupModal()">Sign up</button>
-  </div>
-</header>
-
-<!-- HERO SECTION -->
-<section class="hero-container">
-  <div class="hero-content">
-    <h1>Every <span class="highlight">researcher</span> has a place on <strong>CollabResearch</strong>.</h1>
-    <p>Find projects, collaborate, and innovate with leading experts.</p>
-    <div class="hero-buttons">
-      <a routerLink="/register" class="primary-btn">Get Started</a>
-      <a routerLink="/community" class="secondary-link">Visit the community →</a>
+<body>
+  <!-- HEADER SECTION -->
+  <header class="header">
+    <div class="container">
+      <div class="header__logo">
+        <img
+          src="assets/icons/The Grid Icon.svg"
+          alt="The Grid Logo"
+          class="header__logo-img"
+        />
+        <h2 class="header__title">The Grid</h2>
+      </div>
+      <nav class="header__nav">
+        <ul class="header__menu">
+          <li class="header__menu-item"><a routerLink="/about">About</a></li>
+          <li class="header__menu-item">
+            <a routerLink="/explore">Explore</a>
+          </li>
+          <li class="header__menu-item">
+            <a routerLink="/researchers">Researchers</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header__auth">
+        <button class="header__btn header__btn--login" (click)="goToLogin()">
+          LOG IN
+        </button>
+        <button class="header__btn header__btn--signup" (click)="goToSignup()">
+          SIGN UP
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="hero-image">
-    <img ngSrc="assets/images/collaboration.jpg" alt="Collaboration" width="600" height="350" priority >
-  </div>
-</section>
+  </header>
 
-<!-- SERVICES SECTION -->
-<section class="services">
-  <h2>Discover Opportunities</h2>
-  <div class="service-container">
-    <div class="service-card">
-      <h3>Find Research Projects</h3>
-      <p>Search for research projects based on your expertise.</p>
+  <section class="intro-how-wrapper">
+    <!-- INTRO SECTION -->
+    <section class="intro">
+      <div class="container">
+        <div class="intro__content">
+          <h1 class="intro__title">
+            Where Brilliant
+            <span class="intro__title-break">Minds Connect.</span>
+          </h1>
+          <p class="intro__description">
+            Join a global network of top researchers, collaborate on projects,
+            and fast-track discoveries— <em>together.</em>
+          </p>
+          <button class="intro__cta">Get Started</button>
+        </div>
+      </div>
+      <div class="intro__background">
+        <img
+          src="assets/icons/The Grid Icon Outlined.svg"
+          alt="Decorative Icon"
+          class="intro__icon intro__icon--small"
+        />
+        <img
+          src="assets/icons/The Grid Icon Outlined.svg"
+          alt="Decorative Icon"
+          class="intro__icon intro__icon--medium"
+        />
+        <img
+          src="assets/icons/The Grid Icon Outlined.svg"
+          alt="Decorative Icon"
+          class="intro__icon intro__icon--large"
+        />
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works">
+      <div class="container">
+        <h2 class="how-it-works__title">How It Works</h2>
+        <div class="how-it-works__cards">
+          <article class="how-it-works__card">
+            <img
+              src="assets/icons/Abstract Icon 1.svg"
+              alt="Step 1"
+              class="how-it-works__icon"
+            />
+            <h3 class="how-it-works__card-title">Title</h3>
+            <p class="how-it-works__card-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor.
+            </p>
+          </article>
+          <article class="how-it-works__card">
+            <img
+              src="assets/icons/Abstract Icon 2.svg"
+              alt="Step 2"
+              class="how-it-works__icon"
+            />
+            <h3 class="how-it-works__card-title">Title</h3>
+            <p class="how-it-works__card-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor.
+            </p>
+          </article>
+          <article class="how-it-works__card">
+            <img
+              src="assets/icons/Abstract Icon 3.svg"
+              alt="Step 3"
+              class="how-it-works__icon"
+            />
+            <h3 class="how-it-works__card-title">Title</h3>
+            <p class="how-it-works__card-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </section>
+  <!-- FIND PROJECTS SECTION -->
+  <section class="projects">
+    <div class="container">
+      <div class="projects__intro">
+        <h2 class="projects__title">Find Projects <br />by Subfield</h2>
+        <p class="projects__subheading">
+          <strong>Lorem ipsum dolor sit amet</strong>
+        </p>
+        <p class="projects__description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+      <div class="projects__cards">
+        <!-- Future project cards go here -->
+      </div>
     </div>
-    <div class="service-card">
-      <h3>Collaborate with Experts</h3>
-      <p>Work with top researchers worldwide.</p>
+  </section>
+
+  <!-- COLLABORATE WITH EXPERTS SECTION -->
+  <section class="collaboration">
+    <div class="container">
+      <div class="collaboration__intro">
+        <h2 class="collaboration__title">
+          Collaborate <br />
+          with Experts
+        </h2>
+        <p class="collaboration__subheading">
+          <strong>Lorem ipsum dolor sit amet</strong>
+        </p>
+        <p class="collaboration__description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+      <!-- Right Column: Expert Cards -->
+      <div class="collaboration__experts">
+        <article class="expert-card expert-card--one">
+          <img
+            src="assets/images/expert1.jpg"
+            alt="Expert 1"
+            class="expert-card__img"
+          />
+          <div class="expert-card__info">
+            <strong class="expert-card__name">Alin Dobra</strong>
+            <p class="expert-card__details">
+              Databases &amp; Cybersecurity | 75+ Publications
+            </p>
+            <p class="expert-card__institution">University of Florida</p>
+          </div>
+        </article>
+        <article class="expert-card expert-card--two">
+          <img
+            src="assets/images/expert2.jpg"
+            alt="Expert 2"
+            class="expert-card__img"
+          />
+          <div class="expert-card__info">
+            <strong class="expert-card__name">Petar Veličković</strong>
+            <p class="expert-card__details">
+              Deep Learning | 100+ Publications
+            </p>
+            <p class="expert-card__institution">University of Cambridge</p>
+          </div>
+        </article>
+      </div>
     </div>
-    <div class="service-card">
-      <h3>Manage Your Team</h3>
-      <p>Assign roles and track project progress efficiently.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>Built with ❤️ by passionate researchers.</p>
-</footer>
-
-<!-- LOGIN MODAL -->
-<div class="modal" *ngIf="showLoginModal">
-  <div class="modal-content">
-    <h2>Login</h2>
-    <button class="close" (click)="closeLoginModal()">X</button>
-    <p>Your teammate will work on this section.</p>
-  </div>
-</div>
-
-<!-- SIGNUP MODAL -->
-<div class="modal" *ngIf="showSignupModal">
-  <div class="modal-content">
-    <h2>Sign Up</h2>
-    <button class="close" (click)="closeSignupModal()">X</button>
-    <p>Your teammate will work on this section.</p>
-  </div>
-</div>
+  </section>
+</body>
