@@ -1,52 +1,83 @@
-/* General Reset */
-* {
-  font-family: 'Funnel Sans';
+/* home.css */
+
+/* Content Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
 }
 
 /* HEADER */
-header {
+.header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 50px;
   background-color: white;
+  z-index: 10;
+  flex-wrap: nowrap;
 }
 
-.logo {
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.header__logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
-.logo img {
+.header__logo-img {
   width: 30px;
   height: 30px;
 }
 
-nav ul {
+.header__title {
+  font-size: 20px;
+  margin: 0;
+}
+
+/* Navigation */
+.header__nav {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.header__menu {
   display: flex;
   list-style: none;
   gap: 30px;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
 }
 
-nav ul li a {
+.header__menu-item a {
   text-decoration: none;
   color: black;
   font-size: 16px;
   font-weight: 500;
 }
 
-/* AUTH BUTTONS */
-.auth-buttons {
+/* Auth Buttons */
+.header__auth {
   display: flex;
+  align-items: center;
   gap: 5px;
-  border-radius: 25px;
-  overflow: hidden;
-  background: #E1D9C9;
+  width: auto;
+  background: #e1d9c9;
   padding: 3px;
+  border-radius: 25px;
+  flex-shrink: 0;
 }
 
-.login-btn, .signup-btn {
+.header__btn {
   padding: 8px 15px;
   border: none;
   font-size: 14px;
@@ -54,49 +85,51 @@ nav ul li a {
   font-weight: bold;
 }
 
-.login-btn {
+.header__btn--login {
   background: transparent;
   color: #000;
 }
 
-.signup-btn {
-  background: #1E293B;
+.header__btn--signup {
+  background: #1e293b;
   color: white;
   border-radius: 20px;
 }
 
-/* HERO SECTION */
-.hero-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 600px;
-  text-align: center;
+.intro-how-wrapper {
+  overflow: hidden;
+}
+
+/* INTRO SECTION */
+.intro {
   position: relative;
-  padding: 40px;
-  background-color: #E1D9C9;
+  padding: 40px 0;
+  background-color: #e1d9c9;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
 }
 
-.hero-content {
-  max-width: 50%;
+.intro__content {
+  text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
-.hero-content h1 {
+.intro__title {
   font-size: 90px;
   font-weight: bold;
   color: #ffffff;
+  margin-bottom: 20px;
 }
 
-.hero-content p {
+.intro__description {
   font-size: 18px;
   color: black;
+  margin-bottom: 20px;
 }
 
-.cta-button {
-  background-color: #1E293B;
+.intro__cta {
+  background-color: #1e293b;
   color: white;
   padding: 12px 24px;
   font-size: 16px;
@@ -105,244 +138,240 @@ nav ul li a {
   cursor: pointer;
 }
 
-/* HERO BACKGROUND ICONS */
-.hero-background {
+/* INTRO BACKGROUND ICONS */
+.intro__background {
   position: absolute;
-  right: 0;
   top: 0;
-  height: 100%;
+  right: 0;
   width: 100%;
+  height: 100%;
   pointer-events: none;
-  overflow-y: visible;
+  overflow: visible;
+  z-index: 1;
 }
 
-.hero-background img {
+.intro__background img {
   position: absolute;
   opacity: 1;
 }
 
-.hero-background .icon-large {
-  bottom: -40px;
-  right: -270px;
-  width: 500px;
+.intro__icon--large {
+  bottom: -150px;
+  right: -210px;
+  width: 400px;
   transform: rotate(24deg);
   z-index: 2;
   pointer-events: none;
 }
 
-.hero-background .icon-medium {
+.intro__icon--medium {
   top: 10%;
-  right: 15%;
-  width: 200px;
+  right: 9%;
+  width: 150px;
   transform: rotate(-10deg);
 }
 
-.hero-background .icon-small {
+.intro__icon--small {
   top: 35%;
   left: 10%;
-  width: 180px;
+  width: 120px;
   transform: rotate(15deg);
 }
 
 /* HOW IT WORKS SECTION */
 .how-it-works {
+  padding: 60px 0;
   background-color: white;
-  padding: 60px 80px;
-  text-align: center;
-  position: relative;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
-  margin-top: -40px; /* Makes it merge smoothly with the hero section */
+  margin-top: -40px;
+  text-align: center;
 }
 
-.how-it-works h2 {
+.how-it-works__title {
   font-size: 42px;
   font-weight: bold;
   color: #000;
+  margin-bottom: 40px;
 }
 
-/* CONTAINER FOR CARDS */
-.how-it-works-container {
+.how-it-works__cards {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 40px;
+  flex-wrap: wrap;
 }
 
-.how-it-works-container .work-card img {
-  filter: invert(10%) sepia(12%) saturate(2000%) hue-rotate(180deg) brightness(90%) contrast(90%);
-}
-
-/* INDIVIDUAL CARDS */
-.work-card {
-  background: #F9F9F9;
+.how-it-works__card {
+  background: #f9f9f9;
   padding: 30px;
   border-radius: 20px;
   width: 280px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
 }
 
-.work-card:hover {
+.how-it-works__card:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* ICON STYLING */
-.work-card img {
+.how-it-works__icon {
   width: 50px;
   height: 50px;
   margin-bottom: 15px;
-  fill: #1E293B;
+  filter: invert(10%) sepia(12%) saturate(2000%) hue-rotate(180deg)
+    brightness(90%) contrast(90%);
 }
 
-/* CARD TITLE */
-.work-card h3 {
+.how-it-works__card-title {
   font-size: 18px;
   font-weight: bold;
   color: #000;
   margin-bottom: 10px;
 }
 
-/* CARD TEXT */
-.work-card p {
+.how-it-works__card-description {
   font-size: 14px;
   color: #444;
   line-height: 1.5;
 }
 
-/* FIND PROJECTS SECTION */
-.projects-section {
-  background-color: #1E293B;
-  color: white;
-  padding: 60px 300px;
-  text-align: left;
-  position: relative;
+/* PROJECTS SECTION */
+.projects {
+  padding: 60px 0;
+  background-color: #1e293b;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  color: white;
+  text-align: left;
 }
 
-.projects-content {
-  max-width: 50%;
+.projects__intro {
+  margin-bottom: 40px;
 }
 
-.projects-content h2 {
+.projects__title {
   font-size: 42px;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
-.projects-content .subheading {
+.projects__subheading {
   font-size: 18px;
   font-weight: bold;
-  color: #D1D5DB;
+  color: #d1d5db;
+  margin-bottom: 10px;
 }
 
-.projects-content .description {
+.projects__description {
   font-size: 16px;
-  color: #D1D5DB;
+  color: #d1d5db;
   line-height: 1.6;
   max-width: 400px;
 }
 
-/* Placeholder for Folder Images */
-.project-images {
-  width: 50%;
+.projects__cards {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 250px;
 }
 
-/* COLLABORATE WITH EXPERTS SECTION */
-.collaborate-experts {
-  background-color: #555D67; /* Moss color */
-  padding: 60px 80px;
-  text-align: left;
-  position: relative;
-  color: white;
+/* COLLABORATION SECTION */
+.collaboration {
+  padding: 60px 0;
+  background-color: #555d67;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
-  margin-top: -40px; /* Makes it merge smoothly with the previous section */
+  color: white;
+  text-align: left;
+  margin-top: -40px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  z-index: 2;
 }
 
-/* TEXT CONTENT */
-.collaborate-content {
+.collaboration__intro {
   max-width: 40%;
 }
 
-.collaborate-content h2 {
+.collaboration__title {
   font-size: 42px;
   font-weight: bold;
   color: white;
 }
 
-.collaborate-content p {
+.collaboration__subheading {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+}
+
+.collaboration__description {
   font-size: 16px;
   line-height: 1.6;
+  margin-top: 10px;
 }
 
-/* EXPERTS FLASHCARDS */
-.experts-container {
-  display: flex;
+.collaboration__experts {
   position: relative;
   width: 50%;
-  justify-content: center;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  height: 100px;
 }
 
-/* EXPERT CARD BASE STYLE */
+/* EXPERT CARD */
 .expert-card {
   background: white;
   border-radius: 20px;
   padding: 15px;
   width: 220px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: absolute;
   text-align: left;
 }
 
-/* EXPERT IMAGE */
-.expert-card img {
+.expert-card__img {
   width: 100%;
   border-radius: 10px;
 }
 
-/* EXPERT INFO */
-.expert-info {
+.expert-card__info {
   padding: 10px;
 }
 
-.expert-info strong {
+.expert-card__name {
   font-size: 16px;
   color: black;
 }
 
-.expert-info p {
+.expert-card__details {
   font-size: 14px;
   color: #555;
   margin: 3px 0;
 }
 
-/* POSITIONING THE FLASHCARDS */
-.expert-one {
-  transform: rotate(-10deg);
-  top: -20px;
-  left: 20px;
+.expert-card__institution {
+  font-size: 14px;
+  color: #555;
 }
 
-.expert-two {
+.expert-card:nth-child(1) {
+  transform: rotate(-10deg);
+  top: -150px;
+  left: 1070px;
+}
+
+.expert-card:nth-child(2) {
   transform: rotate(10deg);
-  bottom: -20px;
-  right: 20px;
+  top: -230px;
+  right: -300px;
 }
