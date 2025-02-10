@@ -1,23 +1,19 @@
 package database
 
 import (
-	"backend/models"
-	"log"
-
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-// global database instance
+// DB is the global database object
 var DB *gorm.DB
 
-// initialize database connection
+// InitDatabase initializes the database connection
 func InitDatabase() {
 	var err error
-	DB, err = gorm.Open(sqlite.Open("users.db"), &gorm.Config{})
+	// Replace with your DB credentials
+	DB, err = gorm.Open(mysql.Open("user:password@/dbname"), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to users database: ", err)
+		panic("Failed to connect to database")
 	}
-
-	DB.AutoMigrate(&models.User{}, &models.UserProfile{})
 }

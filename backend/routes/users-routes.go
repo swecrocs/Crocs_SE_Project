@@ -6,9 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UsersRoutes(router *gin.Engine) {
-	users := router.Group("/users")
-	{
-		users.PUT("/:id", controllers.EditUserProfile)
-	}
+func RegisterUserRoutes(router *gin.Engine) {
+	// Only login route for now
+	router.POST("/auth/login", controllers.LoginUser)
 }

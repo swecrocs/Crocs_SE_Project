@@ -1,10 +1,22 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"backend/database" // Make sure you're importing the correct package
+	"fmt"
+)
 
+// User struct representing a user in the database
 type User struct {
-	gorm.Model
-	Email    string      `json:"email" gorm:"unique;not null"`
-	Password string      `json:"password" gorm:"not null"`
-	Profile  UserProfile `json:"profile" gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	ID       uint   `json:"id"`
+	Email    string `json:"email" gorm:"unique"`
+	Password string `json:"password"`
+}
+
+// GetUserByEmail retrieves a user by email from the database
+func GetUserByEmail(email string) (User, error) {
+	var user User
+	if err := database.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		return user, fmt.Errorf("user not found")
+	}
+	return user, nil
 }

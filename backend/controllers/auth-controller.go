@@ -1,73 +1,72 @@
 package controllers
 
 import (
-	"backend/database"
 	"backend/models"
 	"backend/utils"
 	"net/http"
+	"os"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-type UserRegistrationRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+var jwtKey = []byte(os.Getenv("JWT_SECRET"))
+
+type Claims struct {
+	UserID uint `json:"user_id"`
+	jwt.StandardClaims
 }
 
-type UserRegistrationResponse struct {
-	Message string `json:"message" example:"Registration successful"`
-	UserID  uint   `json:"user_id"`
-}
-
-type ErrorResponse struct {
-	Error string `json:"error" example:"Invalid request"`
-}
-
-// RegisterUser godoc
-// @Summary      Register a new user
-// @Description  Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.
+// LoginUser godoc
+// @Summary      Authenticate user
+// @Description  Authenticate user credentials and return a JWT token.
 // @Tags         Authentication
 // @Accept       json
 // @Produce      json
-// @Param        requestBody body UserRegistrationRequest true "User credentials"
-// @Success      201 {object} UserRegistrationResponse
-// @Failure      400 {object} ErrorResponse
-// @Failure      500 {object} ErrorResponse
-// @Router       /auth/register [post]
-func RegisterUser(c *gin.Context) {
-	var requestBody UserRegistrationRequest
+// @Param        request body models.User true "User login details"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} utils.ErrorResponse
+// @Failure      401 {object} utils.ErrorResponse
+// @Router       /auth/login [post]
+func LoginUser(c *gin.Context) {
+	var loginRequest models.User
 
-	// validate input request against expected schema
-	if err := c.ShouldBindJSON(&requestBody); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
+	// Bind JSON request
+	if err := c.ShouldBindJSON(&loginRequest); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorResponse{Error: "Invalid request"})
 		return
 	}
 
-	// hash password
-	hashedPassword, err := utils.HashPassword(requestBody.Password)
+	// Fetch user from database
+	user, err := models.GetUserByEmail(loginRequest.Email)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to hash password"})
+		c.JSON(http.StatusUnauthorized, utils.ErrorResponse{Error: "Invalid email or password"})
 		return
 	}
 
-	// create new user
-	user := models.User{Email: requestBody.Email, Password: hashedPassword}
-	// ensure email does not already exist in user database
-	if err := database.DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Email already registered"})
+	// Verify password
+	if !utils.CheckPasswordHash(loginRequest.Password, user.Password) {
+		c.JSON(http.StatusUnauthorized, utils.ErrorResponse{Error: "Invalid email or password"})
 		return
 	}
 
-	// create blank user profile
-	userProfile := models.UserProfile{UserID: user.ID}
-	if err := database.DB.Create(&userProfile).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to create user profile"})
+	// Generate JWT token
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &Claims{
+		UserID: user.ID,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utils.ErrorResponse{Error: "Failed to generate token"})
 		return
 	}
 
-	// respond upon successful registration
-	c.JSON(
-		http.StatusCreated,
-		UserRegistrationResponse{Message: "Registration successful", UserID: user.ID},
-	)
+	// Return token
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
