@@ -20,6 +20,38 @@ definitions:
       message:
         type: string
     type: object
+  controllers.ProfileRetrievalResponse:
+    properties:
+      affiliation:
+        type: string
+      bio:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  controllers.UserLoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  controllers.UserLoginResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+      user_id:
+        type: integer
+    type: object
   controllers.UserRegistrationRequest:
     properties:
       email:
@@ -41,6 +73,41 @@ info:
   title: The Grid Backend API
   version: "0.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user login with email and password, returns JWT token
+        on success.
+      parameters:
+      - description: User credentials
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Login user
+      tags:
+      - Authentication
   /auth/register:
     post:
       consumes:
@@ -72,6 +139,35 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve user profile information by user ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProfileRetrievalResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get user profile
+      tags:
+      - Users
   /users/{id}/profile:
     put:
       consumes:
