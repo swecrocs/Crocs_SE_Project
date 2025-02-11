@@ -71,3 +71,63 @@ func RegisterUser(c *gin.Context) {
 		UserRegistrationResponse{Message: "Registration successful", UserID: user.ID},
 	)
 }
+
+type UserLoginRequest struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+type UserLoginResponse struct {
+	Message string `json:"message"`
+	UserID  uint   `json:"user_id"`
+	Token   string `json:"token"`
+}
+
+// LoginUser godoc
+// @Summary      Login user
+// @Description  Authenticate user login with email and password, returns JWT token on success.
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        requestBody body UserLoginRequest true "User credentials"
+// @Success      200 {object} UserLoginResponse
+// @Failure      400 {object} ErrorResponse
+// @Failure      401 {object} ErrorResponse
+// @Failure      500 {object} ErrorResponse
+// @Router       /auth/login [post]
+func LoginUser(c *gin.Context) {
+	var requestBody UserLoginRequest
+
+	// validate request body
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
+		return
+	}
+
+	// find user by email
+	var user models.User
+	if err := database.DB.Where("email = ?", requestBody.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, ErrorResponse{Error: "Invalid email"})
+		return
+	}
+
+	// verify password
+	if !utils.CheckPassword(user.Password, requestBody.Password) {
+		c.JSON(http.StatusUnauthorized, ErrorResponse{Error: "Invalid password"})
+		return
+	}
+
+	// generate JWT token
+	token, err := utils.GenerateJWT(user.ID, user.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to generate token"})
+		return
+	}
+
+	// return success response with token
+	c.JSON(http.StatusOK, UserLoginResponse{
+		Message: "Login successful",
+		UserID:  user.ID,
+		Token:   token,
+	})
+}
