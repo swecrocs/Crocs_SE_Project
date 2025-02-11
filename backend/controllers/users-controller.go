@@ -8,6 +8,48 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type ProfileRetrievalResponse struct {
+	UserID      uint   `json:"user_id"`
+	Email       string `json:"email"`
+	FullName    string `json:"full_name"`
+	Bio         string `json:"bio"`
+	Affiliation string `json:"affiliation"`
+}
+
+// RetrieveUserProfile godoc
+// @Summary      Get user profile
+// @Description  Retrieve user profile information by user ID.
+// @Tags         Users
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "User ID"
+// @Success      200  {object}  ProfileRetrievalResponse
+// @Failure      404  {object}  ErrorResponse
+// @Failure      500  {object}  ErrorResponse
+// @Router       /users/{id} [get]
+func RetrieveUserProfile(c *gin.Context) {
+	userID := c.Param("id")
+
+	// get user and user profile in a single query
+	var user models.User
+	if err := database.DB.Preload("Profile").First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
+		return
+	}
+
+	// create response
+	response := ProfileRetrievalResponse{
+		UserID:      user.ID,
+		Email:       user.Email,
+		FullName:    user.Profile.FullName,
+		Bio:         user.Profile.Bio,
+		Affiliation: user.Profile.Affiliation,
+	}
+
+	// respond on success
+	c.JSON(http.StatusOK, response)
+}
+
 type ProfileEditRequest struct {
 	FullName    string `json:"full_name"`
 	Bio         string `json:"bio"`
