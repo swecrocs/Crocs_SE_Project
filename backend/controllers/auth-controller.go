@@ -43,6 +43,11 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
+	// validate email formatting
+	if !utils.IsEmailValid(requestBody.Email) {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid email format"})
+	}
+
 	// hash password
 	hashedPassword, err := utils.HashPassword(requestBody.Password)
 	if err != nil {
