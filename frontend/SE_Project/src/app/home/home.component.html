@@ -1,36 +1,6 @@
 <body>
   <!-- HEADER SECTION -->
-  <header class="header">
-    <div class="container">
-      <div class="header__logo">
-        <img
-          src="assets/icons/The Grid Icon.svg"
-          alt="The Grid Logo"
-          class="header__logo-img"
-        />
-        <h2 class="header__title">The Grid</h2>
-      </div>
-      <nav class="header__nav">
-        <ul class="header__menu">
-          <li class="header__menu-item"><a routerLink="/about">About</a></li>
-          <li class="header__menu-item">
-            <a routerLink="/explore">Explore</a>
-          </li>
-          <li class="header__menu-item">
-            <a routerLink="/researchers">Researchers</a>
-          </li>
-        </ul>
-      </nav>
-      <div class="header__auth">
-        <button class="header__btn header__btn--login" (click)="goToLogin()">
-          LOG IN
-        </button>
-        <button class="header__btn header__btn--signup" (click)="goToSignup()">
-          SIGN UP
-        </button>
-      </div>
-    </div>
-  </header>
+  <app-header></app-header>
 
   <section class="intro-how-wrapper">
     <!-- INTRO SECTION -->
@@ -78,10 +48,11 @@
               alt="Step 1"
               class="how-it-works__icon"
             />
-            <h3 class="how-it-works__card-title">Title</h3>
+            <h3 class="how-it-works__card-title">Create Your Profile</h3>
             <p class="how-it-works__card-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor.
+              Set up a detailed profile highlighting your research interests and
+              expertise. This helps like-minded researchers find and connect
+              with you.
             </p>
           </article>
           <article class="how-it-works__card">
@@ -90,10 +61,10 @@
               alt="Step 2"
               class="how-it-works__icon"
             />
-            <h3 class="how-it-works__card-title">Title</h3>
+            <h3 class="how-it-works__card-title">Discover Opportunities</h3>
             <p class="how-it-works__card-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor.
+              Browse ongoing projects, discussion boards, and specialized
+              communities. Find your niche or explore new avenues of research.
             </p>
           </article>
           <article class="how-it-works__card">
@@ -102,10 +73,10 @@
               alt="Step 3"
               class="how-it-works__icon"
             />
-            <h3 class="how-it-works__card-title">Title</h3>
+            <h3 class="how-it-works__card-title">Collaborate & Grow</h3>
             <p class="how-it-works__card-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor.
+              Connect with fellow researchers, exchange ideas, and work
+              collectively to publish groundbreaking findings.
             </p>
           </article>
         </div>
@@ -118,11 +89,12 @@
       <div class="projects__intro">
         <h2 class="projects__title">Find Projects <br />by Subfield</h2>
         <p class="projects__subheading">
-          <strong>Lorem ipsum dolor sit amet</strong>
+          <strong>Explore the Research Frontier</strong>
         </p>
         <p class="projects__description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Delve into a variety of specialized fields—from quantum computing to
+          medical engineering—and discover projects that match your passion and
+          expertise.
         </p>
       </div>
       <div class="projects__cards">
@@ -133,23 +105,23 @@
 
   <!-- COLLABORATE WITH EXPERTS SECTION -->
   <section class="collaboration">
-    <div class="container">
+    <div class="container collaboration__container">
+      <!-- Intro Content -->
       <div class="collaboration__intro">
-        <h2 class="collaboration__title">
-          Collaborate <br />
-          with Experts
-        </h2>
+        <h2 class="collaboration__title">Collaborate</h2>
         <p class="collaboration__subheading">
-          <strong>Lorem ipsum dolor sit amet</strong>
+          <strong>Network with Leading Scholars</strong>
         </p>
         <p class="collaboration__description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Expand your professional circle and learn from the best. Join forces
+          with renowned researchers, share insights, and push the boundaries of
+          discovery.
         </p>
       </div>
-      <!-- Right Column: Expert Cards -->
+
+      <!-- Expert Cards -->
       <div class="collaboration__experts">
-        <article class="expert-card expert-card--one">
+        <article class="expert-card">
           <img
             src="assets/images/expert1.jpg"
             alt="Expert 1"
@@ -158,12 +130,13 @@
           <div class="expert-card__info">
             <strong class="expert-card__name">Alin Dobra</strong>
             <p class="expert-card__details">
-              Databases &amp; Cybersecurity | 75+ Publications
+              Databases & Cybersecurity | 75+ Publications
             </p>
             <p class="expert-card__institution">University of Florida</p>
           </div>
         </article>
-        <article class="expert-card expert-card--two">
+
+        <article class="expert-card">
           <img
             src="assets/images/expert2.jpg"
             alt="Expert 2"

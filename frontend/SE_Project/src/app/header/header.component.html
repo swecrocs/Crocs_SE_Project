@@ -1,0 +1,51 @@
+<header class="header">
+  <div class="container">
+    <div class="header__logo" (click)="goHome()">
+      <img
+        src="assets/icons/The Grid Icon.svg"
+        alt="The Grid Logo"
+        class="header__logo-img"
+      />
+      <h2 class="header__title">The Grid</h2>
+    </div>
+
+    <nav class="header__nav">
+      <ul class="header__menu">
+        <li class="header__menu-item"><a routerLink="/about">About</a></li>
+        <li class="header__menu-item"><a routerLink="/explore">Explore</a></li>
+        <li class="header__menu-item">
+          <a routerLink="/researchers">Researchers</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header__auth">
+      <!-- Show login/signup buttons if not logged in -->
+      <ng-container *ngIf="!isLoggedIn()">
+        <button class="header__btn header__btn--login" (click)="goToLogin()">
+          LOG IN
+        </button>
+        <button class="header__btn header__btn--signup" (click)="goToSignup()">
+          SIGN UP
+        </button>
+      </ng-container>
+
+      <!-- Show profile dropdown if logged in -->
+      <ng-container *ngIf="isLoggedIn()">
+        <div class="header__profile-dropdown">
+          <button class="profile-btn" (click)="toggleDropdown()">
+            <img
+              src="assets/icons/user-icon.png"
+              alt="User Profile"
+              class="profile-img"
+            />
+          </button>
+          <div class="dropdown-menu" *ngIf="dropdownOpen()">
+            <a class="dropdown-item" (click)="goToProfile()">Edit Profile</a>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</header>
