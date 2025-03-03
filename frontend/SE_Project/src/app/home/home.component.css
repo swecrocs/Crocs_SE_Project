@@ -1,5 +1,4 @@
 /* home.css */
-
 /* Content Container */
 .container {
   width: 90%;
@@ -8,99 +7,11 @@
   padding: 20px 0;
 }
 
-/* HEADER */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 50px;
-  background-color: white;
-  z-index: 10;
-  flex-wrap: nowrap;
-}
-
-.header .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Logo */
-.header__logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.header__logo-img {
-  width: 30px;
-  height: 30px;
-}
-
-.header__title {
-  font-size: 20px;
-  margin: 0;
-}
-
-/* Navigation */
-.header__nav {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.header__menu {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
-}
-
-.header__menu-item a {
-  text-decoration: none;
-  color: black;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* Auth Buttons */
-.header__auth {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  width: auto;
-  background: #e1d9c9;
-  padding: 3px;
-  border-radius: 25px;
-  flex-shrink: 0;
-}
-
-.header__btn {
-  padding: 8px 15px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.header__btn--login {
-  background: transparent;
-  color: #000;
-}
-
-.header__btn--signup {
-  background: #1e293b;
-  color: white;
-  border-radius: 20px;
-}
-
-.intro-how-wrapper {
-  overflow: hidden;
-}
-
 /* INTRO SECTION */
+.intro-how-wrapper {
+  overflow: visible;
+}
+
 .intro {
   position: relative;
   padding: 40px 0;
@@ -146,7 +57,6 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: visible;
   z-index: 1;
 }
 
@@ -155,13 +65,16 @@
   opacity: 1;
 }
 
+.intro__icon {
+  position: absolute;
+  opacity: 1;
+}
+
 .intro__icon--large {
-  bottom: -150px;
-  right: -210px;
-  width: 400px;
-  transform: rotate(24deg);
-  z-index: 2;
-  pointer-events: none;
+  bottom: -30%;
+  right: 2%;
+  width: 300px;
+  transform: rotate(15deg);
 }
 
 .intro__icon--medium {
@@ -288,55 +201,58 @@
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   color: white;
-  text-align: left;
   margin-top: -40px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+}
+
+.collaboration__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 140px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .collaboration__intro {
-  max-width: 40%;
+  text-align: left;
 }
 
 .collaboration__title {
   font-size: 42px;
   font-weight: bold;
+  margin-bottom: 15px;
   color: white;
 }
 
 .collaboration__subheading {
   font-size: 18px;
   font-weight: bold;
-  color: white;
   margin-top: 10px;
+  color: white;
 }
 
 .collaboration__description {
   font-size: 16px;
   line-height: 1.6;
   margin-top: 10px;
+  color: white;
 }
 
 .collaboration__experts {
-  position: relative;
-  width: 50%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: flex-start;
 }
 
-/* EXPERT CARD */
+/* Each expert card */
 .expert-card {
   background: white;
   border-radius: 20px;
-  padding: 15px;
   width: 220px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  text-align: left;
+  color: black;
+  padding: 15px;
 }
 
 .expert-card__img {
@@ -345,11 +261,13 @@
 }
 
 .expert-card__info {
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .expert-card__name {
   font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
   color: black;
 }
 
@@ -364,14 +282,8 @@
   color: #555;
 }
 
-.expert-card:nth-child(1) {
-  transform: rotate(-10deg);
-  top: -150px;
-  left: 1070px;
-}
-
-.expert-card:nth-child(2) {
-  transform: rotate(10deg);
-  top: -230px;
-  right: -300px;
+@media (max-width: 768px) {
+  .collaboration__container {
+    grid-template-columns: 1fr;
+  }
 }

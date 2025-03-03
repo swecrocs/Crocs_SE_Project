@@ -1,20 +1,24 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../header/header.component';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-header',
   standalone: true,
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  imports: [CommonModule, HeaderComponent],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css'],
+  imports: [CommonModule],
 })
-export class HomeComponent {
+export class HeaderComponent {
+  // Reuse signals or services to track login state
   isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
   dropdownOpen = signal<boolean>(false);
 
   constructor(private router: Router) {}
+
+  goHome() {
+    this.router.navigate(['/home']);
+  }
 
   goToLogin() {
     this.router.navigate(['/login']);
@@ -25,7 +29,7 @@ export class HomeComponent {
   }
 
   goToProfile() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/edit-profile']);
   }
 
   logout() {
