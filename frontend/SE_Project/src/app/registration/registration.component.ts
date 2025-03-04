@@ -46,25 +46,18 @@ export class RegistrationComponent {
             const newValue = { email: data?.email, password: data?.password };
             this.accountService.register(newValue).subscribe({
                 next: (response) => {
-                    console.log('Successfully register:', response);
                     this.handlePromptOpen('Successfully register', 'close');
                 },
                 error: (err) => {
-                    console.log(err);
                     const {message} = err;
                     console.error('Failed to register:', err);
                     this.handlePromptOpen(`Failed to register:${message}`, 'close');
                 }
             });
         } else {
-            console.log('Passwords do not match');
             this.handlePromptOpen('Passwords do not match', 'close');
         }
     }
-
-    // validateFormValue (data: any) {
-    //     if (!this.isNotEmptyString(data?.email)) 
-    // }
 
     // check confirm password
     checkConfirmPwd (data: any) {

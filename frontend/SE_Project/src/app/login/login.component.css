@@ -88,8 +88,8 @@ label {
 }
 
 .login-button {
-  background-color: #AE9372;
-  color: white;
+  background-color: #AE9372!important;
+  color: white!important;
   border: none;
   border-radius: 1rem;
   width: 50%;
@@ -102,7 +102,7 @@ label {
 }
 
 .signup-button {
-  color: #AE9372;
+  color: #AE9372!important;
   border-radius: 1rem;
   width: 50%;
   font-size: 16px;
