@@ -139,7 +139,7 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
-  /users/{id}:
+  /users/{id}/profile:
     get:
       consumes:
       - application/json
@@ -168,7 +168,6 @@ paths:
       summary: Get user profile
       tags:
       - Users
-  /users/{id}/profile:
     put:
       consumes:
       - application/json
@@ -196,6 +195,14 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+        "401":
+          description: Unauthorized - Missing or invalid JWT token
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "403":
+          description: Forbidden - Cannot modify another user's profile
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
         "404":
           description: Not Found
           schema:
@@ -204,6 +211,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Edit user profile
       tags:
       - Users

@@ -113,7 +113,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}": {
+        "/users/{id}/profile": {
             "get": {
                 "description": "Retrieve user profile information by user ID.",
                 "consumes": [
@@ -155,10 +155,13 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/users/{id}/profile": {
+            },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing user profile with new information.",
                 "consumes": [
                     "application/json"
@@ -197,6 +200,18 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid JWT token",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Cannot modify another user's profile",
                         "schema": {
                             "$ref": "#/definitions/controllers.ErrorResponse"
                         }
