@@ -26,7 +26,7 @@ type ProfileRetrievalResponse struct {
 // @Success      200  {object}  ProfileRetrievalResponse
 // @Failure      404  {object}  ErrorResponse
 // @Failure      500  {object}  ErrorResponse
-// @Router       /users/{id} [get]
+// @Router       /users/{id}/profile [get]
 func RetrieveUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
