@@ -33,6 +33,35 @@ definitions:
       user_id:
         type: integer
     type: object
+  controllers.ProjectCreationRequest:
+    properties:
+      description:
+        type: string
+      required_skills:
+        items:
+          type: string
+        type: array
+      status:
+        enum:
+        - open
+        - in-progress
+        - completed
+        type: string
+      title:
+        type: string
+      visibility:
+        enum:
+        - private
+        type: string
+    required:
+    - title
+    type: object
+  controllers.ProjectCreationResponse:
+    properties:
+      message:
+        example: Project successfully created
+        type: string
+    type: object
   controllers.UserLoginRequest:
     properties:
       email:
@@ -139,6 +168,36 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
+  /projects:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new research project and assigns the creator as an owner
+      parameters:
+      - description: Project attributes
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ProjectCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.ProjectCreationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Create research project
+      tags:
+      - Projects
   /users/{id}/profile:
     get:
       consumes:
