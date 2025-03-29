@@ -3,6 +3,7 @@ package controllers_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -28,6 +29,89 @@ func setupProjectsTest(t *testing.T) {
 
 	// Run migrations
 	database.DB.AutoMigrate(&models.User{}, &models.UserProfile{}, &models.Project{}, &models.Collaborator{})
+
+	// Clean up existing data - Note the order matters due to foreign key constraints
+	database.DB.Exec("DELETE FROM collaborators")
+	database.DB.Exec("DELETE FROM projects")
+	database.DB.Exec("DELETE FROM user_profiles")
+	database.DB.Exec("DELETE FROM users")
+
+	// Reset auto-increment counters
+	database.DB.Exec("UPDATE sqlite_sequence SET seq = 0 WHERE name IN ('users', 'projects', 'collaborators', 'user_profiles')")
+}
+
+func TestRetrieveProject(t *testing.T) {
+	setupProjectsTest(t)
+
+	// Create a test user
+	user := models.User{Email: "retrieve_project@example.com", Password: "password"}
+	result := database.DB.Create(&user)
+	assert.NoError(t, result.Error)
+
+	// Create a test project
+	project := models.Project{
+		Title:       "Test Project",
+		Description: "Test Description",
+		OwnerID:     user.ID,
+		Visibility:  "private",
+		Status:      "open",
+	}
+	project.SetRequiredSkills([]string{"Go", "Testing"})
+	result = database.DB.Create(&project)
+	assert.NoError(t, result.Error)
+
+	// Setup router
+	router := gin.Default()
+	router.GET("/projects/:id", controllers.RetrieveProject)
+
+	t.Run("Successful project retrieval", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/projects/%d", project.ID), nil)
+		router.ServeHTTP(w, req)
+
+		// Assert response code
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		// Parse response
+		var response controllers.ProjectRetrievalResponse
+		err := json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, err)
+
+		// Verify project details
+		assert.Equal(t, project.ID, response.ID)
+		assert.Equal(t, project.Title, response.Title)
+		assert.Equal(t, project.Description, response.Description)
+	})
+
+	t.Run("Project not found", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/projects/999", nil)
+		router.ServeHTTP(w, req)
+
+		// Assert response code
+		assert.Equal(t, http.StatusNotFound, w.Code)
+
+		// Parse error response
+		var response controllers.ErrorResponse
+		err := json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, err)
+		assert.Contains(t, response.Error, "Project not found")
+	})
+
+	t.Run("Invalid project ID", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/projects/invalid", nil)
+		router.ServeHTTP(w, req)
+
+		// Assert response code
+		assert.Equal(t, http.StatusInternalServerError, w.Code)
+
+		// Parse error response
+		var response controllers.ErrorResponse
+		err := json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, err)
+		assert.Contains(t, response.Error, "Failed to fetch project")
+	})
 }
 
 func TestCreateProject(t *testing.T) {

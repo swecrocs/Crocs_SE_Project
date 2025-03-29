@@ -62,6 +62,25 @@ definitions:
         example: Project successfully created
         type: string
     type: object
+  controllers.ProjectRetrievalResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      owner_id:
+        type: integer
+      required_skills:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      title:
+        type: string
+      visibility:
+        type: string
+    type: object
   controllers.UserLoginRequest:
     properties:
       email:
@@ -196,6 +215,35 @@ paths:
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
       summary: Create research project
+      tags:
+      - Projects
+  /projects/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves details of a specific research project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get research project details
       tags:
       - Projects
   /users/{id}/profile:
