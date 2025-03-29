@@ -10,6 +10,56 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type ProjectRetrievalResponse struct {
+	ID             uint     `json:"id"`
+	Title          string   `json:"title"`
+	Description    string   `json:"description"`
+	RequiredSkills []string `json:"required_skills"`
+	Visibility     string   `json:"visibility"`
+	Status         string   `json:"status"`
+	OwnerID        uint     `json:"owner_id"`
+}
+
+// GetProject godoc
+// @Summary      Get research project details
+// @Description  Retrieves details of a specific research project by ID
+// @Tags         Projects
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Project ID"
+// @Success      200 {object} ProjectRetrievalResponse
+// @Failure      404 {object} ErrorResponse
+// @Failure      500 {object} ErrorResponse
+// @Router       /projects/{id} [get]
+func RetrieveProject(c *gin.Context) {
+	// Get project ID from URL parameter
+	projectID := c.Param("id")
+
+	// Find project in database
+	var project models.Project
+	if err := database.DB.First(&project, projectID).Error; err != nil {
+		if err.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, ErrorResponse{Error: "Project not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to fetch project: " + err.Error()})
+		return
+	}
+
+	// Convert to response format
+	response := ProjectRetrievalResponse{
+		ID:             project.ID,
+		Title:          project.Title,
+		Description:    project.Description,
+		RequiredSkills: project.GetRequiredSkills(),
+		Visibility:     project.Visibility,
+		Status:         project.Status,
+		OwnerID:        project.OwnerID,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
 type ProjectCreationRequest struct {
 	Title          string   `json:"title" binding:"required"`
 	Description    string   `json:"description"`

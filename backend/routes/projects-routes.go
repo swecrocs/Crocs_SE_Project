@@ -11,5 +11,6 @@ func ProjectsRoutes(router *gin.Engine) {
 	projects := router.Group("/projects")
 	{
 		projects.POST("", middleware.AuthRequired(), controllers.CreateProject)
+		projects.GET("/:id", controllers.RetrieveProject)
 	}
 }
