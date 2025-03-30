@@ -60,6 +60,45 @@ func RetrieveProject(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+type ProjectListResponse struct {
+    Projects []ProjectRetrievalResponse `json:"projects"`
+}
+
+// ListProjects godoc
+// @Summary      List all research projects
+// @Description  Retrieves a list of all research projects
+// @Tags         Projects
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} ProjectListResponse
+// @Failure      500 {object} ErrorResponse
+// @Router       /projects [get]
+func ListProjects(c *gin.Context) {
+    var projects []models.Project
+    
+    // Fetch all projects with their owners
+    if err := database.DB.Find(&projects).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to fetch projects"})
+        return
+    }
+
+    // Convert to response format
+    response := make([]ProjectRetrievalResponse, len(projects))
+    for i, project := range projects {
+        response[i] = ProjectRetrievalResponse{
+            ID:             project.ID,
+            Title:          project.Title,
+            Description:    project.Description,
+            RequiredSkills: project.GetRequiredSkills(),
+            Visibility:     project.Visibility,
+            Status:        project.Status,
+            OwnerID:       project.OwnerID,
+        }
+    }
+
+    c.JSON(http.StatusOK, ProjectListResponse{Projects: response})
+}
+
 type ProjectCreationRequest struct {
 	Title          string   `json:"title" binding:"required"`
 	Description    string   `json:"description"`
