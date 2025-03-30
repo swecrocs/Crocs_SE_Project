@@ -114,6 +114,33 @@ const docTemplate = `{
             }
         },
         "/projects": {
+            "get": {
+                "description": "Retrieves a list of all research projects",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List all research projects",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ProjectListResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Creates a new research project and assigns the creator as an owner",
                 "consumes": [
@@ -414,6 +441,17 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Project successfully created"
+                }
+            }
+        },
+        "controllers.ProjectListResponse": {
+            "type": "object",
+            "properties": {
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.ProjectRetrievalResponse"
+                    }
                 }
             }
         },
