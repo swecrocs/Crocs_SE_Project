@@ -21,7 +21,7 @@ import { HeaderComponent } from '../header/header.component';
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
 
-  userId = localStorage.getItem('userId') || '';
+  userId = sessionStorage.getItem('userId') || '';
 
   successMessage = signal<string>('');
   errorMessage = signal<string>('');
@@ -44,35 +44,34 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfile() {
-    this.http.get<any>(`http://localhost:8080/users/${this.userId}`).subscribe({
-      next: (data) => {
-        // { affiliation, bio, email, full_name, user_id }
-        this.profileForm.patchValue({
-          full_name: data.full_name || '',
-          affiliation: data.affiliation || '',
-          bio: data.bio || '',
-          email: data.email || '',
-        });
-      },
-      error: (err) => {
-        console.error('Error fetching profile:', err);
-        this.errorMessage.set('Failed to load profile. Please try again.');
-      },
-    });
+    this.http
+      .get<any>(`http://localhost:8080/users/${this.userId}/profile`)
+      .subscribe({
+        next: (data) => {
+          this.profileForm.patchValue({
+            full_name: data.full_name || '',
+            affiliation: data.affiliation || '',
+            bio: data.bio || '',
+            email: data.email || '',
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching profile:', err);
+          this.errorMessage.set('Failed to load profile. Please try again.');
+        },
+      });
   }
 
   onSubmit() {
     if (this.profileForm.valid) {
-      // { "affiliation": "string", "bio": "string", "full_name": "string" }
       const body = {
         full_name: this.profileForm.value.full_name,
         affiliation: this.profileForm.value.affiliation,
         bio: this.profileForm.value.bio,
       };
 
-      // PUT /users/{id}/profile on the backend
       this.http
-        .put<any>(`http://localhost:8080/users/${this.userId}`, body)
+        .put<any>(`http://localhost:8080/users/${this.userId}/profile`, body)
         .subscribe({
           next: (res) => {
             console.log('Profile updated:', res);

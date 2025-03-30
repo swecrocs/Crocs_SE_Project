@@ -39,15 +39,16 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required]),
   });
 
-  // Handler for the form submission
   getFormValue() {
     if (this.form.valid) {
       const { email, password } = this.form.value;
       this.authService.login(email as string, password as string).subscribe({
         next: (response) => {
           console.log('token', response.token);
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('userId', String(response.user_id));
+
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userId', String(response.user_id));
+
           this.router.navigate(['/dashboard']);
         },
         error: (error: HttpErrorResponse) => {

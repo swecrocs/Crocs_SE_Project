@@ -10,11 +10,13 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
 })
 export class HeaderComponent {
-  // Reuse signals or services to track login state
-  isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
   dropdownOpen = signal<boolean>(false);
 
   constructor(private router: Router) {}
+
+  public isLoggedIn(): boolean {
+    return !!sessionStorage.getItem('token');
+  }
 
   goHome() {
     this.router.navigate(['/home']);
@@ -32,9 +34,17 @@ export class HeaderComponent {
     this.router.navigate(['/edit-profile']);
   }
 
+  goToProjects() {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/projects']);
+    }
+  }
+
   logout() {
-    localStorage.removeItem('token');
-    this.isLoggedIn.set(false);
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
     this.dropdownOpen.set(false);
     this.router.navigate(['/']);
   }
