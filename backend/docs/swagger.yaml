@@ -62,6 +62,13 @@ definitions:
         example: Project successfully created
         type: string
     type: object
+  controllers.ProjectListResponse:
+    properties:
+      projects:
+        items:
+          $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+        type: array
+    type: object
   controllers.ProjectRetrievalResponse:
     properties:
       description:
@@ -188,6 +195,24 @@ paths:
       tags:
       - Authentication
   /projects:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all research projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProjectListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: List all research projects
+      tags:
+      - Projects
     post:
       consumes:
       - application/json
