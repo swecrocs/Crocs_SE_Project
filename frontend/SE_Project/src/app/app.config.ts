@@ -8,10 +8,10 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), // Optimized change detection
-    provideRouter(routes), // Routing support
-    provideHttpClient(), // Enables HttpClient for backend API calls
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(),
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
   ],
 };
