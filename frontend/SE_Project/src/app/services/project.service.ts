@@ -57,6 +57,11 @@ export class ProjectService {
     );
   }
 
+  updateProject(id: number, project: Project): Observable<Project> {
+    const headers = this.getAuthHeaders();
+    return this.http.put<Project>(`${this.baseUrl}/${id}`, project, { headers });
+  }
+
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
     return new HttpHeaders({
