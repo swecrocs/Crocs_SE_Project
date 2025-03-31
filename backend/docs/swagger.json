@@ -292,6 +292,15 @@
                 },
                 "full_name": {
                     "type": "string"
+                },
+                "projects": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "string"
                 }
             }
         },
@@ -316,6 +325,15 @@
                     "type": "string"
                 },
                 "full_name": {
+                    "type": "string"
+                },
+                "projects": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "skills": {
                     "type": "string"
                 },
                 "user_id": {

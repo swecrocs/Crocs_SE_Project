@@ -299,6 +299,15 @@ const docTemplate = `{
                 },
                 "full_name": {
                     "type": "string"
+                },
+                "projects": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "skills": {
+                    "type": "string"
                 }
             }
         },
@@ -323,6 +332,15 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "full_name": {
+                    "type": "string"
+                },
+                "projects": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "skills": {
                     "type": "string"
                 },
                 "user_id": {
