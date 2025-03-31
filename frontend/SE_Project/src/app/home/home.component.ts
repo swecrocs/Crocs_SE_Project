@@ -29,7 +29,7 @@ export class HomeComponent {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.isLoggedIn.set(false);
     this.dropdownOpen.set(false);
     this.router.navigate(['/']);

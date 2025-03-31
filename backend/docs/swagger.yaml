@@ -33,6 +33,61 @@ definitions:
       user_id:
         type: integer
     type: object
+  controllers.ProjectCreationRequest:
+    properties:
+      description:
+        type: string
+      required_skills:
+        items:
+          type: string
+        type: array
+      status:
+        enum:
+        - open
+        - in-progress
+        - completed
+        type: string
+      title:
+        type: string
+      visibility:
+        enum:
+        - private
+        type: string
+    required:
+    - title
+    type: object
+  controllers.ProjectCreationResponse:
+    properties:
+      message:
+        example: Project successfully created
+        type: string
+    type: object
+  controllers.ProjectListResponse:
+    properties:
+      projects:
+        items:
+          $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+        type: array
+    type: object
+  controllers.ProjectRetrievalResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      owner_id:
+        type: integer
+      required_skills:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      title:
+        type: string
+      visibility:
+        type: string
+    type: object
   controllers.UserLoginRequest:
     properties:
       email:
@@ -139,7 +194,84 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
-  /users/{id}:
+  /projects:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all research projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProjectListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: List all research projects
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      description: Creates a new research project and assigns the creator as an owner
+      parameters:
+      - description: Project attributes
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ProjectCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.ProjectCreationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Create research project
+      tags:
+      - Projects
+  /projects/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves details of a specific research project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get research project details
+      tags:
+      - Projects
+  /users/{id}/profile:
     get:
       consumes:
       - application/json
@@ -168,7 +300,6 @@ paths:
       summary: Get user profile
       tags:
       - Users
-  /users/{id}/profile:
     put:
       consumes:
       - application/json
@@ -196,6 +327,14 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+        "401":
+          description: Unauthorized - Missing or invalid JWT token
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "403":
+          description: Forbidden - Cannot modify another user's profile
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
         "404":
           description: Not Found
           schema:
@@ -204,6 +343,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Edit user profile
       tags:
       - Users

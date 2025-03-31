@@ -26,7 +26,7 @@ type ProfileRetrievalResponse struct {
 // @Success      200  {object}  ProfileRetrievalResponse
 // @Failure      404  {object}  ErrorResponse
 // @Failure      500  {object}  ErrorResponse
-// @Router       /users/{id} [get]
+// @Router       /users/{id}/profile [get]
 func RetrieveUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -66,10 +66,13 @@ type ProfileEditResponse struct {
 // @Tags         Users
 // @Accept       json
 // @Produce      json
+// @Security     BearerAuth
 // @Param        id path string true "User ID"
 // @Param        request body ProfileEditRequest true "Profile information"
 // @Success      200 {object} ProfileEditResponse
 // @Failure      400 {object} ErrorResponse
+// @Failure      401 {object} ErrorResponse "Unauthorized - Missing or invalid JWT token"
+// @Failure      403 {object} ErrorResponse "Forbidden - Cannot modify another user's profile"
 // @Failure      404 {object} ErrorResponse
 // @Failure      500 {object} ErrorResponse
 // @Router       /users/{id}/profile [put]
