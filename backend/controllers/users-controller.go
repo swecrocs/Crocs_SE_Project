@@ -14,6 +14,9 @@ type ProfileRetrievalResponse struct {
 	FullName    string `json:"full_name"`
 	Bio         string `json:"bio"`
 	Affiliation string `json:"affiliation"`
+	Skills      string `json:"skills"`
+	Role        string `json:"role"`
+	Projects    string `json:"projects"`
 }
 
 // RetrieveUserProfile godoc
@@ -37,13 +40,16 @@ func RetrieveUserProfile(c *gin.Context) {
 		return
 	}
 
-	// create response
+	// create response with new fields
 	response := ProfileRetrievalResponse{
 		UserID:      user.ID,
 		Email:       user.Email,
 		FullName:    user.Profile.FullName,
 		Bio:         user.Profile.Bio,
 		Affiliation: user.Profile.Affiliation,
+		Skills:      user.Profile.Skills,
+		Role:        user.Profile.Role,
+		Projects:    user.Profile.Projects,
 	}
 
 	// respond on success
@@ -54,6 +60,9 @@ type ProfileEditRequest struct {
 	FullName    string `json:"full_name"`
 	Bio         string `json:"bio"`
 	Affiliation string `json:"affiliation"`
+	Skills      string `json:"skills"`
+	Role        string `json:"role"`
+	Projects    string `json:"projects"`
 }
 
 type ProfileEditResponse struct {
@@ -93,10 +102,13 @@ func EditUserProfile(c *gin.Context) {
 		return
 	}
 
-	// update profile fields
+	// update profile fields with new fields
 	profile.FullName = request.FullName
 	profile.Bio = request.Bio
 	profile.Affiliation = request.Affiliation
+	profile.Skills = request.Skills
+	profile.Role = request.Role
+	profile.Projects = request.Projects
 
 	// save changes to database
 	if err := database.DB.Save(&profile).Error; err != nil {

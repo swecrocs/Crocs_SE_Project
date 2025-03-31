@@ -8,4 +8,7 @@ type UserProfile struct {
 	FullName    string `json:"full_name"`
 	Bio         string `json:"bio"`
 	Affiliation string `json:"affiliation"`
+	Skills      string `json:"skills"`
+	Role        string `json:"role"`
+	Projects    string `json:"projects"`
 }
