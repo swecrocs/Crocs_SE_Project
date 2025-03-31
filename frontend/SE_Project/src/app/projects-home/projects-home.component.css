@@ -1,3 +1,4 @@
+/* Keep your existing styles for the page background, add-project-btn, etc. */
 .projects-page {
   position: relative;
   background-color: #e1d9c9;
@@ -56,14 +57,17 @@
 
 .project-card {
   background: #f9f9f9;
-  padding: 30px;
   border-radius: 20px;
-  width: 280px;
+  width: 320px;
+  height: 220px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 20px;
-  cursor: pointer;
+  text-align: left; /* left-align the text inside */
 }
 
 .project-card:hover {
@@ -71,23 +75,38 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.project-card img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 15px;
+/* Card Header */
+.project-card-header {
+  background-color: #1e293b; /* blueish color from the create project button */
+  color: #fff;
+  padding: 15px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .project-card-title {
+  margin: 0;
   font-size: 18px;
   font-weight: bold;
-  color: #000;
-  margin-bottom: 10px;
+  text-align: center;
 }
 
+/* Card Body (description) */
+.project-card-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+/* The text in the body */
 .project-card-description {
   font-size: 14px;
   color: #444;
   line-height: 1.5;
+  margin: 0;
+  text-align: center;
 }
 
 .modal-backdrop {
