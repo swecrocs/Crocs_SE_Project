@@ -44,8 +44,9 @@ export class ProjectsHomeComponent implements OnInit {
 
   loadProjects() {
     this.loading.set(true);
-    this.projectService.getAllProjects().subscribe((data) => {
+    this.projectService.getAllProjects().subscribe((response) => {
       this.loading.set(false);
+      const data = response.projects || [];
 
       if (data.length > 0) {
         this.projects.set(data);

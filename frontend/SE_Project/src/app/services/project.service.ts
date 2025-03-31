@@ -20,14 +20,21 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getAllProjects(): Observable<Project[]> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<Project[]>(this.baseUrl, { headers }).pipe(
-      catchError((error) => {
-        console.error('[ProjectService] getAllProjects error:', error);
-        return of([]);
-      })
-    );
+  getAllProjects(): Observable<{ projects: Project[] }> {
+    const token = sessionStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .get<{ projects: Project[] }>(this.baseUrl, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('[ProjectService] getAllProjects error:', error);
+          return of({ projects: [] });
+        })
+      );
   }
 
   getProjectById(id: number): Observable<Project | null> {
