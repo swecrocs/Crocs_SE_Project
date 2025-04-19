@@ -1,9 +1,58 @@
 basePath: /
 definitions:
+  controllers.CollabInvitationRequest:
+    properties:
+      email:
+        type: string
+      role:
+        enum:
+        - programmer
+        - editor
+        type: string
+    required:
+    - email
+    - role
+    type: object
+  controllers.CollabInvitationResponse:
+    properties:
+      message:
+        type: string
+    type: object
   controllers.ErrorResponse:
     properties:
       error:
         example: Invalid request
+        type: string
+    type: object
+  controllers.InvitationDetail:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      inviter_name:
+        type: string
+      project_id:
+        type: integer
+      project_title:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.InvitationListResponse:
+    properties:
+      invitations:
+        items:
+          $ref: '#/definitions/controllers.InvitationDetail'
+        type: array
+    type: object
+  controllers.MessageResponse:
+    properties:
+      message:
         type: string
     type: object
   controllers.ProfileEditRequest:
@@ -70,6 +119,8 @@ definitions:
     type: object
   controllers.ProjectCreationResponse:
     properties:
+      id:
+        type: integer
       message:
         example: Project successfully created
         type: string
@@ -281,6 +332,127 @@ paths:
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
       summary: Get research project details
+      tags:
+      - Projects
+  /projects/{id}/collaborators:
+    post:
+      consumes:
+      - application/json
+      description: Sends an invitation to a user to collaborate on a project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Invitation details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CollabInvitationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.CollabInvitationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Invite a collaborator to a project
+      tags:
+      - Projects
+  /projects/{id}/collaborators/invitations/{invitationId}/{action}:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to accept or reject a collaboration invitation
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Invitation ID
+        in: path
+        name: invitationId
+        required: true
+        type: integer
+      - description: Action (accept/reject)
+        in: path
+        name: action
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Accept or reject a project invitation
+      tags:
+      - Projects
+  /projects/invitations:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all pending invitations for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.InvitationListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: List pending invitations for the authenticated user
       tags:
       - Projects
   /users/{id}/profile:

@@ -19,5 +19,11 @@ func InitDatabase() {
 		log.Fatal("Failed to connect to users database: ", err)
 	}
 
-	DB.AutoMigrate(&models.User{}, &models.UserProfile{}, &models.Project{}, &models.Collaborator{})
+	DB.AutoMigrate(
+		&models.User{},
+		&models.UserProfile{},
+		&models.Project{},
+		&models.Collaborator{},
+		&models.Invitation{},
+	)
 }

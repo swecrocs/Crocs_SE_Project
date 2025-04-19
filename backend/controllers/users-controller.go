@@ -4,6 +4,7 @@ import (
 	"backend/database"
 	"backend/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -88,10 +89,10 @@ type ProfileEditResponse struct {
 func EditUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
-	// find the profile linked to this user
-	var profile models.UserProfile
-	if err := database.DB.Where("user_id = ?", userID).First(&profile).Error; err != nil {
-		c.JSON(http.StatusNotFound, ErrorResponse{Error: "Profile not found"})
+	// convert userID string to uint
+	uid, err := strconv.ParseUint(userID, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid user ID"})
 		return
 	}
 
@@ -99,6 +100,14 @@ func EditUserProfile(c *gin.Context) {
 	var request ProfileEditRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid request"})
+		return
+	}
+
+	// find or create the profile linked to this user
+	var profile models.UserProfile
+	result := database.DB.Where("user_id = ?", userID).FirstOrCreate(&profile, models.UserProfile{UserID: uint(uid)})
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to find/create profile"})
 		return
 	}
 
