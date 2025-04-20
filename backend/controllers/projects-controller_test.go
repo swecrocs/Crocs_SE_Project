@@ -409,3 +409,94 @@ func TestGetProjectInvitationsNoInvitations(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 0, len(response.Invitations))
 }
+
+func TestListUserProjects(t *testing.T) {
+	setupProjectsTest(t)
+
+	// Create test users
+	owner := models.User{Email: "owner@example.com", Password: "password"}
+	collaborator := models.User{Email: "collaborator@example.com", Password: "password"}
+	otherUser := models.User{Email: "other@example.com", Password: "password"}
+	database.DB.Create(&owner)
+	database.DB.Create(&collaborator)
+	database.DB.Create(&otherUser)
+
+	// Generate tokens
+	ownerToken, err := utils.GenerateJWT(owner.ID, owner.Email)
+	assert.NoError(t, err)
+	collaboratorToken, err := utils.GenerateJWT(collaborator.ID, collaborator.Email)
+	assert.NoError(t, err)
+
+	// Create projects
+	projects := []models.Project{
+		{
+			Title:       "Owner's Project",
+			Description: "Description 1",
+			OwnerID:     owner.ID,
+			Visibility:  "private",
+			Status:      "open",
+		},
+		{
+			Title:       "Collaborator's Project",
+			Description: "Description 2",
+			OwnerID:     otherUser.ID,
+			Visibility:  "private",
+			Status:      "in-progress",
+		},
+	}
+
+	for i := range projects {
+		projects[i].SetRequiredSkills([]string{"Go", "Testing"})
+		database.DB.Create(&projects[i])
+	}
+
+	// Add collaborator to the second project
+	collab := models.Collaborator{
+		ProjectID: projects[1].ID,
+		UserID:    collaborator.ID,
+		Role:      "programmer",
+	}
+	database.DB.Create(&collab)
+
+	// Setup router
+	router := gin.Default()
+	router.GET("/projects/user", middleware.AuthRequired(), controllers.ListUserProjects)
+
+	t.Run("Owner sees their own project", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/projects/user", nil)
+		req.Header.Set("Authorization", "Bearer "+ownerToken)
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		var response controllers.ProjectListResponse
+		err := json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, err)
+		assert.Equal(t, 1, len(response.Projects))
+		assert.Equal(t, "Owner's Project", response.Projects[0].Title)
+	})
+
+	t.Run("Collaborator sees project they're involved in", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/projects/user", nil)
+		req.Header.Set("Authorization", "Bearer "+collaboratorToken)
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		var response controllers.ProjectListResponse
+		err := json.Unmarshal(w.Body.Bytes(), &response)
+		assert.NoError(t, err)
+		assert.Equal(t, 1, len(response.Projects))
+		assert.Equal(t, "Collaborator's Project", response.Projects[0].Title)
+	})
+
+	t.Run("Unauthorized access", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/projects/user", nil)
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusUnauthorized, w.Code)
+	})
+}

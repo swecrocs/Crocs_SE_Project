@@ -455,3 +455,50 @@ func RespondToProjectInvitation(c *gin.Context) {
 
 	c.JSON(http.StatusOK, MessageResponse{Message: fmt.Sprintf("Invitation %s successfully", action+"ed")})
 }
+
+// ListUserProjects godoc
+// @Summary      List projects the authenticated user is involved in
+// @Description  Retrieves a list of all projects where the user is either the owner or a collaborator
+// @Tags         Projects
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} ProjectListResponse
+// @Failure      401 {object} ErrorResponse
+// @Failure      500 {object} ErrorResponse
+// @Router       /projects/user [get]
+func ListUserProjects(c *gin.Context) {
+	userID := utils.InferUserID(c)
+	if userID == 0 {
+		c.JSON(http.StatusUnauthorized, ErrorResponse{Error: "Authentication required"})
+		return
+	}
+
+	// Find projects where user is owner or collaborator
+	var projects []models.Project
+	err := database.DB.
+		Joins("LEFT JOIN collaborators ON projects.id = collaborators.project_id").
+		Where("projects.owner_id = ? OR collaborators.user_id = ?", userID, userID).
+		Preload("Collaborators").
+		Find(&projects).Error
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to fetch projects"})
+		return
+	}
+
+	// Convert to response format
+	response := make([]ProjectRetrievalResponse, len(projects))
+	for i, project := range projects {
+		response[i] = ProjectRetrievalResponse{
+			ID:             project.ID,
+			Title:          project.Title,
+			Description:    project.Description,
+			RequiredSkills: project.GetRequiredSkills(),
+			Visibility:     project.Visibility,
+			Status:         project.Status,
+			OwnerID:        project.OwnerID,
+		}
+	}
+
+	c.JSON(http.StatusOK, ProjectListResponse{Projects: response})
+}

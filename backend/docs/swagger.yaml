@@ -455,6 +455,30 @@ paths:
       summary: List pending invitations for the authenticated user
       tags:
       - Projects
+  /projects/user:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all projects where the user is either the owner
+        or a collaborator
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ProjectListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: List projects the authenticated user is involved in
+      tags:
+      - Projects
   /users/{id}/profile:
     get:
       consumes:
