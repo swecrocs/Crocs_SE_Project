@@ -1,25 +1,30 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { InvitationsModalComponent } from '../invitations-modal/invitations-modal.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
+  imports: [CommonModule, InvitationsModalComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  imports: [CommonModule],
 })
 export class HeaderComponent {
-  dropdownOpen = signal<boolean>(false);
+  // controls the profile dropdown
+  dropdownOpen = signal(false);
+
+  // controls whether the invitations modal is shown
+  showInvitationsModal = signal(false);
 
   constructor(private router: Router) {}
 
-  public isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     return !!sessionStorage.getItem('token');
   }
 
   goHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   goToLogin() {
@@ -42,9 +47,22 @@ export class HeaderComponent {
     }
   }
 
+  // called when “Invitations” is clicked in the nav
+  goToInvitations() {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.showInvitationsModal.set(true);
+    }
+  }
+
+  // hide the invitations modal
+  hideInvitationsModal() {
+    this.showInvitationsModal.set(false);
+  }
+
   logout() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userId');
+    sessionStorage.clear();
     this.dropdownOpen.set(false);
     this.router.navigate(['/']);
   }
