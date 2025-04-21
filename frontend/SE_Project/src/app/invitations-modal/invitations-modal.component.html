@@ -1,0 +1,28 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Invitations</h2>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="invitations().length; else none">
+        <div *ngFor="let inv of invitations()" class="inv-card">
+          <h3 class="inv-title">{{ inv.project_title }}</h3>
+          <p class="inv-meta">
+            Invited by <strong>{{ inv.email }}</strong>
+          </p>
+          <p class="inv-role">
+            Role: <em>{{ inv.role }}</em>
+          </p>
+          <div class="inv-actions">
+            <button class="btn-accept" (click)="accept(inv)">Accept</button>
+            <button class="btn-reject" (click)="reject(inv)">Reject</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #none>
+        <p class="no-invitations">You have no pending invitations.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

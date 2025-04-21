@@ -9,7 +9,6 @@ textarea {
   resize: none;
 }
 
-/* PROFILE */
 .project {
   padding: 60px 0;
   background-color: #e1d9c9;
@@ -24,7 +23,6 @@ textarea {
   text-align: left;
 }
 
-/* Form container */
 .project_form {
   display: flex;
   flex-direction: column;
@@ -54,20 +52,8 @@ textarea {
   border: 1px solid #ccc;
 }
 
-/*Create project button*/
-.project_save-btn {
-  background-color: #1e293b;
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
 .input-field {
-  width: '100%';
+  width: 100%;
   padding: 10px;
   background-color: #fff;
   border-radius: 5px;
@@ -78,4 +64,38 @@ textarea {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.project_save-btn,
+.invite-btn {
+  flex: 1;
+  padding: 12px 0;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.project_save-btn {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.project_save-btn:hover {
+  background-color: #16202a;
+}
+
+.invite-btn {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.invite-btn:hover {
+  background-color: #16202a;
 }

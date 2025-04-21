@@ -12,6 +12,6 @@ export const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'edit-profile', component: ProfileComponent },
   { path: 'projects', component: ProjectsHomeComponent },
-  { path: 'projects/:id', component: ProjectEditorComponent},
+  { path: 'projects/:id', component: ProjectEditorComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

@@ -3,72 +3,88 @@
 <section class="project">
   <div class="container">
     <h2 class="project_title">Edit Your Project</h2>
-    <form [formGroup]="projectForm" class="project_form" >
-        <div class="form-group">
-            <label for="title">Title <span class="required">*</span></label>
+    <form [formGroup]="projectForm" class="project_form">
+      <div class="form-group">
+        <label for="title">Title <span class="required">*</span></label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="Enter your project title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          rows="4"
+          formControlName="description"
+          placeholder="Enter your project description"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="required_skills">Required Skills</label>
+        <div class="input-field">
+          <mat-chip-grid #chipGrid>
+            @for (skill of skills(); track skill) {
+            <mat-chip-row (removed)="handleDeleteSkill(skill)">
+              {{ skill }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
             <input
-                id="title"
-                type="text"
-                formControlName="title"
-                placeholder="Enter your project title"
+              id="skills"
+              [placeholder]="
+                skills().length === 0
+                  ? 'Add a skill (e.g. JavaScript, Go, Angular)'
+                  : ''
+              "
+              [matChipInputFor]="chipGrid"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="handleAddSkill($event)"
+              class="skill-input"
             />
+          </mat-chip-grid>
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea
-                id="description"
-                rows="4"
-                formControlName="description"
-                placeholder="Enter your project description"
-            ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="Status">Status <span class="required">*</span></label>
+        <div class="input-field">
+          <mat-select id="status" formControlName="status">
+            @for (option of statusOptions; track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+            }
+          </mat-select>
         </div>
-        <div class="form-group">
-            <label for="required_skills">Required Skills</label>
-            <div class="input-field">
-                <mat-chip-grid #chipGrid>
-                  @for (skill of skills(); track skill) {
-                    <mat-chip-row
-                      (removed)="handleDeleteSkill(skill)"
-                    >
-                      {{skill}}
-                      <button matChipRemove>
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                    </mat-chip-row>
-                  }
-                  <input
-                    id="skills"
-                    [placeholder]="skills().length === 0 ? 'Add a skill (e.g. JavaScript, Go, Angular)' : ''"
-                    [matChipInputFor]="chipGrid"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="handleAddSkill($event)"
-                    class="skill-input"
-                  />
-                </mat-chip-grid>
-            </div>
+      </div>
+      <div class="form-group">
+        <label for="visibility"
+          >Visibility <span class="required">*</span></label
+        >
+        <div class="input-field">
+          <mat-select id="visibility" formControlName="visibility">
+            @for (option of visibilityOptions; track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+            }
+          </mat-select>
         </div>
-        <div class="form-group">
-            <label for="Status">Status <span class="required">*</span></label>
-            <div class="input-field">
-                <mat-select id="status" formControlName="status">
-                    @for (option of statusOptions; track option) {
-                      <mat-option [value]="option">{{option}}</mat-option>
-                    }
-                </mat-select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="visibility">Visibility <span class="required">*</span></label>
-            <div class="input-field">
-                <mat-select id="visibility" formControlName="visibility">
-                    @for (option of visibilityOptions; track option) {
-                      <mat-option [value]="option">{{option}}</mat-option>
-                    }
-                </mat-select>
-            </div>
-        </div>
-        <button type="button" (click)="handleSave()" class="project_save-btn">Save Project</button>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="handleSave()" class="project_save-btn">
+          Save Project
+        </button>
+        <button type="button" class="invite-btn" (click)="openInviteModal()">
+          Invite Collaborator
+        </button>
+      </div>
     </form>
   </div>
 </section>
+<app-invite-collaborator-modal
+  *ngIf="showInviteModal()"
+  [projectId]="projectId"
+  (close)="closeInviteModal()"
+></app-invite-collaborator-modal>

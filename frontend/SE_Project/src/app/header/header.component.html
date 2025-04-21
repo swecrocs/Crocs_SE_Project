@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header__logo" (click)="goHome()">
       <img
-        src="assets/icons/The Grid Icon.svg"
+        src="/assets/icons/The Grid Icon.svg"
         alt="The Grid Logo"
         class="header__logo-img"
       />
@@ -16,7 +16,7 @@
           <a (click)="goToProjects()">Projects</a>
         </li>
         <li class="header__menu-item">
-          <a routerLink="/researchers">Researchers</a>
+          <a (click)="goToInvitations()">Invitations</a>
         </li>
       </ul>
     </nav>
@@ -35,7 +35,7 @@
         <div class="header__profile-dropdown">
           <button class="profile-btn" (click)="toggleDropdown()">
             <img
-              src="assets/icons/user-icon.png"
+              src="/assets/icons/user-icon.png"
               alt="User Profile"
               class="profile-img"
             />
@@ -49,3 +49,8 @@
     </div>
   </div>
 </header>
+
+<app-invitations-modal
+  *ngIf="showInvitationsModal()"
+  (close)="hideInvitationsModal()"
+></app-invitations-modal>
