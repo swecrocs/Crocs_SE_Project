@@ -11,4 +11,6 @@ type UserProfile struct {
 	Skills      string `json:"skills"`
 	Role        string `json:"role"`
 	Projects    string `json:"projects"`
+	Location    string `json:"location" example:"Gainesville, FL"`
+	GitHub      string `json:"github" example:"https://github.com/johndoe"`
 }

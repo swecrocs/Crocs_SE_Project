@@ -663,6 +663,12 @@ const docTemplate = `{
                 "full_name": {
                     "type": "string"
                 },
+                "github": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
                 "projects": {
                     "type": "string"
                 },
@@ -695,6 +701,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "full_name": {
+                    "type": "string"
+                },
+                "github": {
+                    "type": "string"
+                },
+                "location": {
                     "type": "string"
                 },
                 "projects": {
