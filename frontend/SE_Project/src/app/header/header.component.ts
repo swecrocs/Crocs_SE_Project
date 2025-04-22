@@ -56,6 +56,10 @@ export class HeaderComponent {
     }
   }
 
+  goToAbout() {
+    this.router.navigate(['/about']);
+  }
+
   // hide the invitations modal
   hideInvitationsModal() {
     this.showInvitationsModal.set(false);
