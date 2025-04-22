@@ -18,6 +18,8 @@ type ProfileRetrievalResponse struct {
 	Skills      string `json:"skills"`
 	Role        string `json:"role"`
 	Projects    string `json:"projects"`
+	Location    string `json:"location"`
+	GitHub      string `json:"github"`
 }
 
 // RetrieveUserProfile godoc
@@ -51,6 +53,8 @@ func RetrieveUserProfile(c *gin.Context) {
 		Skills:      user.Profile.Skills,
 		Role:        user.Profile.Role,
 		Projects:    user.Profile.Projects,
+		Location:    user.Profile.Location,
+		GitHub:      user.Profile.GitHub,
 	}
 
 	// respond on success
@@ -64,6 +68,8 @@ type ProfileEditRequest struct {
 	Skills      string `json:"skills"`
 	Role        string `json:"role"`
 	Projects    string `json:"projects"`
+	Location    string `json:"location"`
+	GitHub      string `json:"github"`
 }
 
 type ProfileEditResponse struct {
@@ -118,6 +124,8 @@ func EditUserProfile(c *gin.Context) {
 	profile.Skills = request.Skills
 	profile.Role = request.Role
 	profile.Projects = request.Projects
+	profile.Location = request.Location
+	profile.GitHub = request.GitHub
 
 	// save changes to database
 	if err := database.DB.Save(&profile).Error; err != nil {

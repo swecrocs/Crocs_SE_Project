@@ -63,6 +63,10 @@ definitions:
         type: string
       full_name:
         type: string
+      github:
+        type: string
+      location:
+        type: string
       projects:
         type: string
       role:
@@ -84,6 +88,10 @@ definitions:
       email:
         type: string
       full_name:
+        type: string
+      github:
+        type: string
+      location:
         type: string
       projects:
         type: string
